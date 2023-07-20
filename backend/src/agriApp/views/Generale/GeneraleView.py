@@ -28,6 +28,7 @@ class GenderStats(APIView):
         response_data = {}
         for index, row in gender_distribution.iterrows():
             response_data[row['Sexe']] = row['count']
+        
         tab_response_data = []
         tab_response_data.append(response_data)
         return Response(tab_response_data)
@@ -35,7 +36,6 @@ class GenderStats(APIView):
 class ZoneStats(APIView):
     #permission_classes = [IsAuthenticated]
     def get(self, request):
-        zone = request.GET.get('zone', None)
         union = request.GET.get('union', None)
         
         last_file=File.objects.last()
@@ -79,12 +79,13 @@ class LocalisationStats(APIView):
         
         filled_count = df[(df['Si Parcelle'] == 1)].shape[0]
         not_filled_count=df[(df['Si Parcelle'] == 0)].shape[0]
-        productor_with_not_filled_count=df.loc[df['Si Parcelle'] == 0 ,[ 'code','Nom et Prénoms','Sexe','Contact','Village','Union','Zone','Code Surface','Surface Parcelle']]
-        #productor_with_not_filled_count=productor_with_not_filled_count.to_dict()
+        productor_with_not_filled_count=df.loc[df['Si Parcelle'] == 0 ,[ 'code','Nom et Prénoms','Sexe','Contact','Village','Union','Zone','Code Surface','Surface Parcelle','Si Parcelle']]
+        productor_with_not_filled_count.fillna(value=0,inplace=True)
+        productor_with_not_filled_count=productor_with_not_filled_count.to_dict(orient='records') 
         response_data = {
             'filled_count': filled_count,
             'not_filled_count': not_filled_count,
-            #'productor_with_not_filled_count':productor_with_not_filled_count
+            'productor_with_not_filled_count':productor_with_not_filled_count
         }
         tab_response_data = []
         tab_response_data.append(response_data)
@@ -108,10 +109,14 @@ class PolygoneStats(APIView):
         
         filled_count = df[(df['Si Polygon'] == 1)].shape[0]
         not_filled_count=df[(df['Si Polygon'] == 0)].shape[0]
+        productor_with_not_filled_count=df.loc[df['Si Polygon'] == 0 ,[ 'code','Nom et Prénoms','Sexe','Contact','Village','Union','Zone','Code Surface','Surface Parcelle','Si Polygon']]
+        productor_with_not_filled_count.fillna(value=0,inplace=True)
+        productor_with_not_filled_count=productor_with_not_filled_count.to_dict(orient='records') 
         
         response_data = {
             'filled_count': filled_count,
             'not_filled_count': not_filled_count,
+            'productor_with_not_filled_count':productor_with_not_filled_count
         }
         tab_response_data = []
         tab_response_data.append(response_data)
