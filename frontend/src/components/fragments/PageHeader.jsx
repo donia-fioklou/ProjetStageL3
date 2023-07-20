@@ -12,17 +12,17 @@ const PageHeader = () => {
                             <ul className="menu-nav">
                                 <li className="menu-item menu-item">
                                     <a onClick={() => { navigate('/') }} className="menu-link active">
-                                        <span className="menu-text">Génerale</span>
+                                        <span className="menu-text">Générale</span>
                                     </a>
                                 </li>
                                 <li className="menu-item menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
                                     <a onClick={() => { navigate('/cat') }} className="menu-link">
-                                        <span className="menu-text">Categorie</span>
+                                        <span className="menu-text">Formulaire</span>
                                     </a>
                                 </li>
                                 <li className="menu-item menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
                                     <a onClick={() => { navigate('/pre') }} className="menu-link">
-                                        <span className="menu-text">Charts</span>
+                                        <span className="menu-text">Analyse biologique</span>
                                     </a>
                                 </li>
                             </ul>

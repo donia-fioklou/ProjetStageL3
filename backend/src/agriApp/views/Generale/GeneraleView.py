@@ -5,6 +5,34 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from agriApp.views.Generale.generale import Generale
 
+class NumberOfProducer(APIView):
+    #permission_classes = [IsAuthenticated]
+    def get(self, request):
+        zone = request.GET.get('zone', None)
+        union = request.GET.get('union', None)
+        
+        last_file=File.objects.last()
+        last_file=last_file.filePath
+        df=pd.read_excel(last_file)
+        df=Generale(df).nettoyage()
+        
+        if zone:
+            df = df[df['Zone'] == zone]
+        if union:
+            df = df[df['Union'] == union]
+        
+        # Calculer le nombre de producteurs
+        df = df.drop_duplicates(subset=['code'], keep='last')
+        number_of_producer = df.shape[0]
+
+        # Créer une réponse JSON
+        response_data = {
+            'number_of_producer': number_of_producer
+        }
+        tab_response_data = []
+        tab_response_data.append(response_data)
+        return Response(tab_response_data)
+
 class GenderStats(APIView):
     #permission_classes = [IsAuthenticated]
     def get(self, request):
@@ -43,8 +71,7 @@ class ZoneStats(APIView):
         df=pd.read_excel(last_file)
         df=Generale(df).nettoyage()
         
-        if zone:
-            df = df[df['Zone'] == zone]
+        
         if union:
             df = df[df['Union'] == union]
         
