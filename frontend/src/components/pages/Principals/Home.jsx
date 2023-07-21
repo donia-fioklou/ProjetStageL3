@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import Aside from '../../fragments/Aside';
@@ -6,7 +7,7 @@ import PageHeader from '../../fragments/PageHeader';
 import ProducerCard from '../../fragments/ProducerCard'
 import Filters from '../../fragments/Filters'
 import Donut from '../Charts/donut';
-import Pie from '../Charts/pie';
+import PieChart from '../Charts/pie';
 const Home = () => {
     //let url = "assets/media/svg/shapes/abstract-4.svg"
     //let url = "assets/media/svg/patterns/taieri.svg"
@@ -26,7 +27,7 @@ const Home = () => {
   
     useEffect(() => {
       // Fetch the number of producers
-      fetch('http://192.168.1.106:8000/api/number-of-producer/')
+      fetch('http://192.168.1.142:8000/api/number-of-producer/')
         .then((response) => response.json())
         .then((data) => {
           // Assuming the API returns the number of producers as 'numberOfProducers' field
@@ -38,38 +39,46 @@ const Home = () => {
         });
   
       // Fetch the list of zones
-      fetch('http://192.168.1.106:8000/api/filter-zone/')
+      fetch('http://192.168.1.142:8000/api/filter-zone/')
         .then((response) => response.json())
         .then((data) => {
           // Assuming the API returns an array of zones as 'zones' field
           setZones(data);
-          console.log(data);
+          //console.log(data);
         })
         .catch((error) => {
           console.error('Error fetching zones:', error);
         });
   
       // Fetch the list of cooperatives
-        fetch('http://192.168.1.106:8000/api/filter-cooperative/')
+        fetch('http://192.168.1.142:8000/api/filter-cooperative/')
             .then((response) => response.json())
             .then((data) => {
             // Assuming the API returns an array of cooperatives as 'cooperatives' field
             setCooperatives(data);
-            console.log(data);
+            //console.log(data);
             })
             .catch((error) => {
             console.error('Error fetching cooperatives:', error);
             });
     // Fetch the gender counts
-    fetch('http://192.168.1.106:8000/api/gender-stats/')
-      .then((response) => response.json())
-      .then((data) => {
-        // Assuming the API returns the gender counts as an object with 'F' and 'M' fields
-        setGenderCounts(data[0]);
-      })
-      .catch((error) => {
-        console.error('Error fetching gender counts:', error);
-      });
+    // fetch('http://192.168.1.142:8000/api/gender-stats/')
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     // Assuming the API returns the gender counts as an object with 'F' and 'M' fields
+    //     setGenderCounts(data[0]);
+    //     console.log(data);
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error fetching gender counts:', error);
+    //   });
+
+    // axios.get("http://192.168.1.142:8000/api/gender-stats/")
+    //         .then(response => {
+    //             setGenderCounts(response.data);
+    //             console.log(response.data);
+    //         })
+    //         .catch(error => console.log(error));
         
     }, []);
    
@@ -156,7 +165,7 @@ const Home = () => {
                                 <div className="d-flex flex-column-fluid">
                                     <div className="container">
                                         <div className="row">
-                                            <Pie opt={pieOptions} id={"pie"} title={"graph"} />
+                                            <PieChart />
                                             <Donut opt={donutOptions} id={"donut"} />
                                             
                                         </div>
