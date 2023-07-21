@@ -1,6 +1,7 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
+import UploadFile from '../pages/Charts/HandleFileUpload';
 
 const Filters = ({ zones, cooperatives }) => {
   return (
@@ -9,7 +10,7 @@ const Filters = ({ zones, cooperatives }) => {
         {/* Filter by zone */}
         <div style={{ marginRight: '20px' }}>
           <Form.Group controlId="zoneFilter">
-          <Card.Title><Form.Label>Filtrer par zone :</Form.Label></Card.Title>
+          <Card.Title><Form.Label>Filtrer par zone </Form.Label></Card.Title>
             <Form.Control as="select">
             {zones.map((option, index) => (
                 <option key={index} value={option}>
@@ -21,9 +22,9 @@ const Filters = ({ zones, cooperatives }) => {
         </div>
 
         {/* Filter by cooperative */}
-        <div>
+        <div style={{ marginRight: '20px' }}>
           <Form.Group controlId="cooperativeFilter">
-          <Card.Title><Form.Label>Filtrer par coopérative :</Form.Label></Card.Title>
+          <Card.Title><Form.Label>Filtrer par coopérative </Form.Label></Card.Title>
             <Form.Control as="select">
               {cooperatives.map((coop) => (
                 <option key={coop} value={coop}>
@@ -34,6 +35,14 @@ const Filters = ({ zones, cooperatives }) => {
             </Form.Control>
           </Form.Group>
         </div>
+        {/* Filter by cooperative */}
+        <div>
+          <Form.Group controlId="nouveauFichier">
+          <Card.Title><Form.Label>Nouveau Fichier </Form.Label></Card.Title>
+            <UploadFile/>
+          </Form.Group>
+        </div>
+        
       </div>
     </Form>
   );

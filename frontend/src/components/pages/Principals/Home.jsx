@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import Aside from '../../fragments/Aside';
@@ -7,7 +6,15 @@ import PageHeader from '../../fragments/PageHeader';
 import ProducerCard from '../../fragments/ProducerCard'
 import Filters from '../../fragments/Filters'
 import Donut from '../Charts/donut';
-import PieChart from '../Charts/pie';
+import GenderChart from '../Charts/GenderChart';
+import ZoneChart from '../Charts/ZoneChart';
+import Chart from "chart.js/auto";
+import { CategoryScale } from "chart.js";
+import LocalisationChart from '../Charts/LocalisationStats';
+import PolygoneChart from '../Charts/PolygoneChart';
+import UploadFile from '../Charts/HandleFileUpload';
+Chart.register(CategoryScale);
+
 const Home = () => {
     //let url = "assets/media/svg/shapes/abstract-4.svg"
     //let url = "assets/media/svg/patterns/taieri.svg"
@@ -27,7 +34,7 @@ const Home = () => {
   
     useEffect(() => {
       // Fetch the number of producers
-      fetch('http://192.168.1.142:8000/api/number-of-producer/')
+      fetch('http://127.0.0.1:8000/api/number-of-producer/')
         .then((response) => response.json())
         .then((data) => {
           // Assuming the API returns the number of producers as 'numberOfProducers' field
@@ -39,7 +46,7 @@ const Home = () => {
         });
   
       // Fetch the list of zones
-      fetch('http://192.168.1.142:8000/api/filter-zone/')
+      fetch('http://127.0.0.1:8000/api/filter-zone/')
         .then((response) => response.json())
         .then((data) => {
           // Assuming the API returns an array of zones as 'zones' field
@@ -51,7 +58,7 @@ const Home = () => {
         });
   
       // Fetch the list of cooperatives
-        fetch('http://192.168.1.142:8000/api/filter-cooperative/')
+        fetch('http://127.0.0.1:8000/api/filter-cooperative/')
             .then((response) => response.json())
             .then((data) => {
             // Assuming the API returns an array of cooperatives as 'cooperatives' field
@@ -62,7 +69,7 @@ const Home = () => {
             console.error('Error fetching cooperatives:', error);
             });
     // Fetch the gender counts
-    // fetch('http://192.168.1.142:8000/api/gender-stats/')
+    // fetch('http://127.0.0.1:8000/api/gender-stats/')
     //   .then((response) => response.json())
     //   .then((data) => {
     //     // Assuming the API returns the gender counts as an object with 'F' and 'M' fields
@@ -73,7 +80,7 @@ const Home = () => {
     //     console.error('Error fetching gender counts:', error);
     //   });
 
-    // axios.get("http://192.168.1.142:8000/api/gender-stats/")
+    // axios.get("http://127.0.0.1:8000/api/gender-stats/")
     //         .then(response => {
     //             setGenderCounts(response.data);
     //             console.log(response.data);
@@ -149,6 +156,9 @@ const Home = () => {
                                     <div className="p-2">
                                     <Filters zones={zones} cooperatives={cooperatives} />
                                     </div>
+
+
+                                    
                                 </div>
                                 {/* Ici, vous pouvez ajouter le reste de votre dashboard */}
                                 </div>
@@ -157,7 +167,7 @@ const Home = () => {
                                 <div className="subheader py-2 py-lg-4 subheader-transparent" id="kt_subheader">
                                     <div className="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
                                         <div className="d-flex align-items-center flex-wrap mr-2">
-                                            <h5 className="text-dark font-weight-bold mt-2 mb-2 mr-5">Charts</h5>
+                                            {/* <h5 className="text-dark font-weight-bold mt-2 mb-2 mr-5">Charts</h5> */}
                                             <div className="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
                                         </div>
                                     </div>
@@ -165,12 +175,13 @@ const Home = () => {
                                 <div className="d-flex flex-column-fluid">
                                     <div className="container">
                                         <div className="row">
-                                            <PieChart />
-                                            <Donut opt={donutOptions} id={"donut"} />
+                                            <GenderChart />
+                                            <ZoneChart />
+                                            <LocalisationChart />
                                             
                                         </div>
                                         <div className="row">
-                                            
+                                            <PolygoneChart/>
                                         </div>
                                     </div>
                                 </div>

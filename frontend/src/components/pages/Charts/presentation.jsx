@@ -8,7 +8,7 @@ import PageHeader from '../../fragments/PageHeader';
 import Column from './column';
 import Donut from './donut';
 import Lines from './line';
-import Pie from './pie';
+import Pie from './GenderChart';
 import Timelines from './timeline';
 
 const Presentation = () => {

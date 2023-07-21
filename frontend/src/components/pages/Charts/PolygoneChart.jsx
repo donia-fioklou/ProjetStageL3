@@ -8,48 +8,41 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 
 
-const PieChart = () => {
+const PolygoneChart = () => {
   const [chart, setChart] = useState([])
-  var baseUrl = "http://192.168.1.142:8000/api/gender-stats/";
+  var baseUrl = "http://127.0.0.1:8000/api/polygone-stats/";
   //var proxyUrl = "https://cors-anywhere.herokuapp.com/";
   //var apiKey = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
 
 
   useEffect(() => {
-    const fetchGenderStats = async () => {
+    const fetchPolygoneStats = async () => {
       await fetch(`${baseUrl}`, {
         method: 'GET',
-        // headers: {
-        //   'Content-Type': 'application/json',
-        //   //'x-access-token': `${apiKey}`,
-        //   'Access-Control-Allow-Origin': "*"
-        // }
       })
       .then((response) => response.json())
       .then((data) => {
-        // Assuming the API returns the number of producers as 'numberOfProducers' field
-        
         setChart(data[0]);
       });
     };
-    fetchGenderStats()
+    fetchPolygoneStats()
   }, [baseUrl])
 
   console.log("chart", chart);
   var data = {
-    labels: ['Femme', 'Homme'],
+    labels: ['remplis', 'non remplis'],
     datasets: [{
       label: [],
-      data: [chart?.F, chart?.M],
+      data: [chart?.filled_count, chart?.not_filled_count],
       backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
       
       ],
       borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
         
       ],
       borderWidth: 1
@@ -72,7 +65,7 @@ const PieChart = () => {
             <div className="card card-custom gutter-b">
                 <div className="card-header h-auto">
                     <div className="card-title py-5">
-                        <h3 className="card-label">Donut Chart</h3>
+                        <h3 className="card-label">Taux de remplissage des localisations</h3>
                     </div>
                 </div>
                 <div className="card-body">
@@ -91,4 +84,4 @@ const PieChart = () => {
   )
 }
 
-export default PieChart
+export default PolygoneChart
