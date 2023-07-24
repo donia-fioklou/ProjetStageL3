@@ -51,9 +51,19 @@ class GenderStats(APIView):
         
         # Calculer la répartition par sexe en utilisant groupby et size
         gender_distribution = df.groupby('Sexe').size().reset_index(name='count')
-
+        productor_masc=df.loc[df['Sexe'] == 'M' ,[ 'code','Nom et Prénoms','Sexe','Contact','Village','Union','Zone','Code Surface','Surface Parcelle',]]
+        productor_masc.fillna(value=0,inplace=True)
+        productor_masc=productor_masc.to_dict(orient='records')
+        
+        productor_fem=df.loc[df['Sexe'] == 'F' ,[ 'code','Nom et Prénoms','Sexe','Contact','Village','Union','Zone','Code Surface','Surface Parcelle',]]
+        productor_fem.fillna(value=0,inplace=True)
+        productor_fem=productor_fem.to_dict(orient='records')
+        
         # Créer une réponse JSON
-        response_data = {}
+        response_data = {
+            'productor_masc': productor_masc,
+            'productor_fem': productor_fem,
+        }
         for index, row in gender_distribution.iterrows():
             response_data[row['Sexe']] = row['count']
         
@@ -65,6 +75,8 @@ class ZoneStats(APIView):
     #permission_classes = [IsAuthenticated]
     def get(self, request):
         union = request.GET.get('union', None)
+        zone = request.GET.get('zone', None)
+        
         
         last_file=File.objects.last()
         last_file=last_file.filePath
@@ -74,9 +86,13 @@ class ZoneStats(APIView):
         
         if union:
             df = df[df['Union'] == union]
+        if zone:
+            df = df[df['Zone'] == zone]
+            
         
         # Calculer la répartition par sexe en utilisant groupby et size
         zone_distribution = df.groupby('Zone').size().reset_index(name='count')
+        
 
         # Créer une réponse JSON
         response_data = {}
@@ -106,13 +122,19 @@ class LocalisationStats(APIView):
         
         filled_count = df[(df['Si Parcelle'] == 1)].shape[0]
         not_filled_count=df[(df['Si Parcelle'] == 0)].shape[0]
+        
         productor_with_not_filled_count=df.loc[df['Si Parcelle'] == 0 ,[ 'code','Nom et Prénoms','Sexe','Contact','Village','Union','Zone','Code Surface','Surface Parcelle','Si Parcelle']]
         productor_with_not_filled_count.fillna(value=0,inplace=True)
         productor_with_not_filled_count=productor_with_not_filled_count.to_dict(orient='records') 
+        
+        productor_with_filled_count=df.loc[df['Si Parcelle'] == 1 ,[ 'code','Nom et Prénoms','Sexe','Contact','Village','Union','Zone','Code Surface','Surface Parcelle','Si Parcelle']]
+        productor_with_filled_count.fillna(value=0,inplace=True)
+        productor_with_filled_count=productor_with_filled_count.to_dict(orient='records')
         response_data = {
             'filled_count': filled_count,
             'not_filled_count': not_filled_count,
-            'productor_with_not_filled_count':productor_with_not_filled_count
+            'productor_with_not_filled_count':productor_with_not_filled_count,
+            'productor_with_filled_count':productor_with_filled_count,
         }
         tab_response_data = []
         tab_response_data.append(response_data)
@@ -140,10 +162,15 @@ class PolygoneStats(APIView):
         productor_with_not_filled_count.fillna(value=0,inplace=True)
         productor_with_not_filled_count=productor_with_not_filled_count.to_dict(orient='records') 
         
+        productor_with_filled_count=df.loc[df['Si Polygon'] == 1 ,[ 'code','Nom et Prénoms','Sexe','Contact','Village','Union','Zone','Code Surface','Surface Parcelle','Si Polygon']]
+        productor_with_filled_count.fillna(value=0,inplace=True)
+        productor_with_filled_count=productor_with_filled_count.to_dict(orient='records')
         response_data = {
             'filled_count': filled_count,
             'not_filled_count': not_filled_count,
-            'productor_with_not_filled_count':productor_with_not_filled_count
+            'productor_with_filled_count':productor_with_filled_count,
+            'productor_with_not_filled_count':productor_with_not_filled_count,
+            
         }
         tab_response_data = []
         tab_response_data.append(response_data)

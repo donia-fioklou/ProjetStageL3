@@ -1,33 +1,53 @@
-import React, { useState } from 'react';
+//import React, { useState } from 'react';
 
-// ... votre code existant ...
+    const HandleFileUpload = () => {
+        //const [selectedFile, setSelectedFile] = useState(null);
 
-const UploadFile = () => {
-    // Vous pouvez utiliser le hook useState pour stocker le fichier sélectionné
-    const [selectedFile, setSelectedFile] = useState(null);
+        const handleFileUpload = async (event) => {
+            const file = event.target.files[0];
+            const allowedExtensions = /(\.xlsx|\.xls)$/i; // Regular expression to match Excel file extensions
+            if (!allowedExtensions.exec(file.name)) {
+                alert('Type de fichier invalide. Veuillez sélectionner un fichier Excel.');
+                return;
+            }
+            const url = 'http://127.0.0.1:8000/api/upload-excel/';
+            const formData = new FormData();
+            formData.append('filePath', file);
 
-    // Fonction appelée lorsque l'utilisateur sélectionne un fichier
-    const handleFileUpload = (event) => {
-        const file = event.target.files[0]; // Le fichier sélectionné par l'utilisateur
-        setSelectedFile(file);
-        // Vous pouvez ajouter ici d'autres actions, comme la lecture du fichier, le traitement, etc.
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                console.log(response);
+                alert("fichier uploadé avec succès");
+                window.location.reload();
+                //
+                
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        return (
+            <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
+                {/* ... votre code JSX existant ... */}
+    
+                {/* Ajoutez le bouton d'upload de fichier ici */}
+                <div className="custom-file">
+                    <input type="file" className="custom-file-input" id="customFile" onChange={handleFileUpload} />
+                    <label className="custom-file-label" htmlFor="customFile">
+                        Nouveau fichier
+                    </label>
+                </div>
+            </div>
+        );
+
+        
     };
 
-    // ... votre code existant ...
+    
 
-    return (
-        <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
-            {/* ... votre code JSX existant ... */}
 
-            {/* Ajoutez le bouton d'upload de fichier ici */}
-            <div className="custom-file">
-                <input type="file" className="custom-file-input" id="customFile" onChange={handleFileUpload} />
-                <label className="custom-file-label" htmlFor="customFile">
-                    Nouveau fichier
-                </label>
-            </div>
-        </div>
-    );
-};
-
-export default UploadFile;
+export default HandleFileUpload;

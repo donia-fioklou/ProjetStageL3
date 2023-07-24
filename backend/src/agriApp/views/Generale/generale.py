@@ -8,6 +8,7 @@ class Generale():
     
     def nettoyage(self):
         # It seems like 'df' should be replaced with 'self.df' to refer to the class attribute
+        self.df=self.df.drop_duplicates(subset=['code'], keep='last')
         self.df = self.df.drop_duplicates(subset=['Code Surface'], keep='last')
         self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']] = self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']].fillna(0)
         self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']] = self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']].replace(to_replace='.*', value=0, regex=True)
