@@ -86,20 +86,27 @@ class ZoneStats(APIView):
         
         if union:
             df = df[df['Union'] == union]
-        if zone:
-            df = df[df['Zone'] == zone]
+       
             
         
         # Calculer la répartition par sexe en utilisant groupby et size
         zone_distribution = df.groupby('Zone').size().reset_index(name='count')
         
+        productor_By_zone=df.loc[df['Zone'] == zone ,[ 'code','Nom et Prénoms','Sexe','Contact','Village','Union','Zone','Code Surface','Surface Parcelle']]
+        productor_By_zone.fillna(value=0,inplace=True)
+        productor_By_zone=productor_By_zone.to_dict(orient='records') 
 
         # Créer une réponse JSON
-        response_data = {}
+        productor_By_zone_data={
+            'productor_By_zone':productor_By_zone,
+        }
+        response_data={}
         for index, row in zone_distribution.iterrows():
             response_data[row['Zone']] = row['count']
+        
         tab_response_data = []
         tab_response_data.append(response_data)
+        tab_response_data.append(productor_By_zone_data)
 
         return Response(tab_response_data)
     

@@ -14,38 +14,46 @@ ChartJS.register(
 );
 
 
-const ZoneChart = () => {
+const ZoneChart = ({selectedCooperative}) => {
   const [chart, setChart] = useState({})
+  const [productorData,setProductorData]=useState({})
+  const [selectedZone,setSelectedZone]=useState('');
+  
 
-  var baseUrl = "http://127.0.0.1:8000/api/zone-stats/";
+  var baseUrl = `http://127.0.0.1:8000/api/zone-stats/?union=${selectedCooperative}&zone=${selectedZone}`;
 
-  function handleDownload() {
+  function handleDownload(event) {
     // Récupérer la valeur sélectionnée du filtre
-    const selectedFilter = document.getElementById('zoneFilter').value;
-  
-    // if (selectedFilter === 'homme') {
-    //   convertJsonToExcel(MascData, "fichier");
-    // } else if (selectedFilter === 'femme') {
-    //   convertJsonToExcel(FemData, "fichier");
-    // } 
+   
+    convertJsonToExcel(productorData.productor_By_zone,`producteur${selectedZone}`);
   }
-  
 
+  function handleZoneChange(event) {
+    // Récupérer la valeur sélectionnée du filtre
+    setSelectedZone(event.target.value);
+    console.log(event.target.value);
+  }
+
+  
+  const fetchZoneData = async () => {
+    await fetch(`${baseUrl}`, {
+      method: 'GET',
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      setChart(data[0]);
+      setProductorData(data[1]);
+      console.log(data[1]);
+    });
+  };
 
   useEffect(() => {
-    const fetchZoneData = async () => {
-      await fetch(`${baseUrl}`, {
-        method: 'GET',
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        setChart(data[0]);
-      });
-    };
-    fetchZoneData()
-  }, [baseUrl])
+    
+  fetchZoneData()
+  }, [selectedZone])
 
-  console.log("chart", chart);
+
+  var listZone=Object.keys(chart);
   var data = {
     labels: Object.keys(chart),
     datasets: [{
@@ -100,13 +108,14 @@ const ZoneChart = () => {
                 </div>
                 <div className="card-footer">
                 <div style={{ display: 'flex' }}>
-                    {/* <select id="zoneFilter" className="form-control" style={{ marginRight: '20px' }}>
-                      {chart.map((option, index) => (
+                    <select id="zoneFilter" className="form-control" style={{ marginRight: '20px' }} onChange={handleZoneChange}>
+                      <option value="all">select</option>
+                      {listZone.map((option, index) => (
                       <option key={index} value={option}>
                           {option}
                       </option>
             ))}
-                    </select> */}
+                    </select>
                     
                     <a onClick={() => handleDownload()} className="btn btn-sm btn-clean btn-icon" title="télécharger fichier">
                     <span class="svg-icon svg-icon-primary svg-icon-2x">

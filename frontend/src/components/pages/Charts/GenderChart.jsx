@@ -29,11 +29,11 @@ export const convertJsonToExcel = (json, file) => {
   };
 
 
-const GenderChart = () => {
+const GenderChart = ({ selectedZone, selectedCooperative }) => {
   const [chart, setChart] = useState([])
   const [FemData,setFemData]=useState([])
   const [MascData,setMascData]=useState([])
-  var baseUrl = "http://127.0.0.1:8000/api/gender-stats/";
+  var baseUrl = `http://127.0.0.1:8000/api/gender-stats/?zone=${selectedZone}&union=${selectedCooperative}`;
   
   
 

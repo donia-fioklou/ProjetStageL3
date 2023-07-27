@@ -11,9 +11,9 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 
 
-const PolygoneChart = () => {
+const PolygoneChart = ({ selectedZone, selectedCooperative }) => {
   const [chart, setChart] = useState([])
-  var baseUrl = "http://127.0.0.1:8000/api/polygone-stats/";
+  var baseUrl = `http://127.0.0.1:8000/api/polygone-stats/?zone=${selectedZone}&union=${selectedCooperative}`;
   const [remplisData,setRemplisData]=useState([]);
   const [nonRemplisData,setNonRemplisData]=useState([]);
 
@@ -45,7 +45,7 @@ const PolygoneChart = () => {
     fetchPolygoneStats()
   }, [baseUrl])
 
-  console.log("chart", chart);
+
   var data = {
     labels: ['remplis', 'non remplis'],
     datasets: [{

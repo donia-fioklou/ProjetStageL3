@@ -5,32 +5,23 @@ import Header from '../../fragments/Header';
 import PageHeader from '../../fragments/PageHeader';
 import ProducerCard from '../../fragments/ProducerCard'
 import Filters from '../../fragments/Filters'
-import Donut from '../Charts/donut';
 import GenderChart from '../Charts/GenderChart';
 import ZoneChart from '../Charts/ZoneChart';
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 import LocalisationChart from '../Charts/LocalisationStats';
 import PolygoneChart from '../Charts/PolygoneChart';
-import UploadFile from '../Charts/HandleFileUpload';
+
 Chart.register(CategoryScale);
 
 const Home = () => {
-    //let url = "assets/media/svg/shapes/abstract-4.svg"
-    //let url = "assets/media/svg/patterns/taieri.svg"
-
-    //const [data, setData] = useState([])
-    //const navigate = useNavigate()
-    const primary = '#6993FF';
-    const success = '#1BC5BD';
-    const info = '#8950FC';
-    const warning = '#FFA800';
-    const danger = '#F64E60';
 
     const [numberOfProducers, setNumberOfProducers] = useState(0);
-    const [zones, setZones] = useState([]);
-    const [cooperatives, setCooperatives] = useState([]);
-    const [genderCounts, setGenderCounts] = useState([]);
+    const [selectedZone,setSelectZone]=useState('');
+    const [selectedCooperative,setSelectCooperative]=useState('');
+    
+    
+    
   
     useEffect(() => {
       // Fetch the number of producers
@@ -45,92 +36,16 @@ const Home = () => {
           console.error('Error fetching number of producers:', error);
         });
   
-      // Fetch the list of zones
-      fetch('http://127.0.0.1:8000/api/filter-zone/')
-        .then((response) => response.json())
-        .then((data) => {
-          // Assuming the API returns an array of zones as 'zones' field
-          setZones(data);
-          //console.log(data);
-        })
-        .catch((error) => {
-          console.error('Error fetching zones:', error);
-        });
-  
-      // Fetch the list of cooperatives
-        fetch('http://127.0.0.1:8000/api/filter-cooperative/')
-            .then((response) => response.json())
-            .then((data) => {
-            // Assuming the API returns an array of cooperatives as 'cooperatives' field
-            setCooperatives(data);
-            //console.log(data);
-            })
-            .catch((error) => {
-            console.error('Error fetching cooperatives:', error);
-            });
-    // Fetch the gender counts
-    // fetch('http://127.0.0.1:8000/api/gender-stats/')
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     // Assuming the API returns the gender counts as an object with 'F' and 'M' fields
-    //     setGenderCounts(data[0]);
-    //     console.log(data);
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error fetching gender counts:', error);
-    //   });
-
-    // axios.get("http://127.0.0.1:8000/api/gender-stats/")
-    //         .then(response => {
-    //             setGenderCounts(response.data);
-    //             console.log(response.data);
-    //         })
-    //         .catch(error => console.log(error));
-        
+     
+    
     }, []);
+    const updateZone=(zone)=>{
+        setSelectZone(zone);
+    };
+    const updateCooperative=(cooperative)=>{
+        setSelectCooperative(cooperative);
+    };
    
-    const donutOptions = {
-        series: [44, 55, 41, 17, 15],
-        chart: {
-            width: 380,
-            type: 'donut',
-        },
-        responsive: [{
-            breakpoint: 480,
-            options: {
-                chart: {
-                    width: 200
-                },
-                legend: {
-                    position: 'bottom'
-                }
-            }
-        }],
-        colors: [primary, success, warning, danger, info]
-    };
- const pieOptions = {
-        series: [genderCounts.M, genderCounts.F],
-        chart: {
-            width: 380,
-            type: 'pie',
-        },
-        labels: ['M', 'F'],
-        responsive: [{
-            breakpoint: 480,
-            options: {
-                chart: {
-                    width: 200
-                },
-                legend: {
-                    position: 'bottom'
-                }
-            }
-        }],
-        colors: [primary, success]
-    };
-    
-    
-
 
     return (
         <div>
@@ -154,7 +69,7 @@ const Home = () => {
                                     <ProducerCard numberOfProducers={numberOfProducers} />
                                     </div>
                                     <div className="p-2">
-                                    <Filters zones={zones} cooperatives={cooperatives} />
+                                    <Filters zone={selectedZone} cooperative={selectedCooperative} upadateZone={updateZone} updateCooperative={updateCooperative}  />
                                     </div>
 
 
@@ -175,13 +90,13 @@ const Home = () => {
                                 <div className="d-flex flex-column-fluid">
                                     <div className="container">
                                         <div className="row">
-                                            <GenderChart />
-                                            <ZoneChart />
-                                            <LocalisationChart />
+                                            <GenderChart selectedZone={selectedZone} selectedCooperative={selectedCooperative} />
+                                            <ZoneChart selectedCooperative={selectedCooperative} />
+                                            <LocalisationChart selectedZone={selectedZone} selectedCooperative={selectedCooperative} />
                                             
                                         </div>
                                         <div className="row">
-                                            <PolygoneChart/>
+                                            <PolygoneChart selectedZone={selectedZone} selectedCooperative={selectedCooperative}/>
                                         </div>
                                     </div>
                                 </div>
@@ -198,18 +113,3 @@ const Home = () => {
 }
 
 export default Home;
-
-/*
-data.map(activite => <div className="col-lg-4" key={activite.id}>
-                                            <div className="card card-custom wave wave-animate-slow wave-success mb-8 mb-lg-0">
-                                                <div className="card-body">
-                                                    <div className="d-flex align-items-center p-5">
-                                                        <div className="d-flex flex-column">
-                                                            <a onClick={() => go(activite.id)} className="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">{activite.bateau.nom}</a>
-                                                            <div className="text-dark-75" >Nombre de cales: {activite.bateau.nbCales}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        ) */

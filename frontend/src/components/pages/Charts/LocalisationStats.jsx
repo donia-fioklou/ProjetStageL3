@@ -9,12 +9,12 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 
 
-const LocalisationChart = () => {
+const LocalisationChart = ({ selectedZone, selectedCooperative }) => {
   const [chart, setChart] = useState([]);
   const [remplisData,setRemplisData]=useState([]);
   const [nonRemplisData,setNonRemplisData]=useState([]);
    
-  var baseUrl = "http://127.0.0.1:8000/api/localisation-stats/";
+  var baseUrl = `http://127.0.0.1:8000/api/localisation-stats/?zone=${selectedZone}&union=${selectedCooperative}`;
 
   function handleDownload() {
     // Récupérer la valeur sélectionnée du filtre
@@ -44,7 +44,7 @@ const LocalisationChart = () => {
     fetchLocalisationStats()
   }, [baseUrl])
 
-  console.log("chart", chart);
+ 
   var data = {
     labels: ['remplis', 'non remplis'],
     datasets: [{
