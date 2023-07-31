@@ -1,7 +1,7 @@
 
 import pandas as pd
 
-class Formulaire():
+class HandleFormulaire():
     def __init__(self, df):
         self.df = df
     
@@ -34,3 +34,15 @@ class Formulaire():
             if not form.equals(forms[0]):     
                 formsConcatProductor.append(pd.concat([forms[0],form],axis=1))
         return formsConcatProductor
+    
+    @staticmethod
+    def extractQuestion(form):
+        questions=[]
+        col_name=[]
+        #parcourir les colonnes à partir de la 3ème
+        for col in form.columns[2:]:
+            col_name.append(col)
+            if 'Bio'in col:
+                questions.append(form.loc[:,col_name])
+                col_name=[]
+        return questions

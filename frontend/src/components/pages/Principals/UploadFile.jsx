@@ -47,17 +47,19 @@ const UploadFile=()=>{
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Nom</th>
-                                                    <th>Nombre de cales</th>
-                                                    <th>Actif</th>
+                                                    <th>contact</th>
+                                                    <th>zone</th>
+                                                    <th>coopérative</th>
                                                     
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
                                                     <th scope="row">1</th>
-                                                    <td>Bateau 1</td>
-                                                    <td>2</td>
-                                                    <td>Oui</td>
+                                                    <td>Abalo</td>
+                                                    <td>92 47 43 15</td>
+                                                    <td>savane</td>
+                                                    <td>savane</td>
 
                                                 </tr>
                                             </tbody>

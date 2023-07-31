@@ -52,8 +52,8 @@ const PolygoneChart = ({ selectedZone, selectedCooperative }) => {
       label: [],
       data: [chart?.filled_count, chart?.not_filled_count],
       backgroundColor: [
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
       
       ],
       borderColor: [

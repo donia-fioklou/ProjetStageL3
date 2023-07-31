@@ -51,8 +51,8 @@ const LocalisationChart = ({ selectedZone, selectedCooperative }) => {
       label: [],
       data: [chart?.filled_count, chart?.not_filled_count],
       backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
       
       ],
       borderColor: [
