@@ -24,6 +24,10 @@ const PageHeader = () => {
                                     <a onClick={() => { navigate('/pre') }} className="menu-link">
                                         <span className="menu-text">Analyse biologique</span>
                                     </a>
+                                </li><li className="menu-item menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
+                                    <a onClick={() => { navigate('/uploadFile') }} className="menu-link">
+                                        <span className="menu-text">Fichier</span>
+                                    </a>
                                 </li>
                             </ul>
                         </div>

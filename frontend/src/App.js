@@ -3,7 +3,7 @@ import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-d
 import './App.css';
 import { AuthContext } from './context/AuthContext';
 /*Pages*/
-import Presentation from './components/pages/Charts/presentation';
+import Presentation from './components/pages/Generale/presentation';
 import Home from './components/pages/Principals/Home';
 import Login from './components/pages/Principals/Login';
 
@@ -16,6 +16,7 @@ import DeleteCat from './components/pages/Categorie/Suppr';
 import Forbiden from './components/Err/403';
 import NotFound from './components/Err/404';
 import Account from './components/pages/Utilisateur/Account';
+import UploadFile from './components/pages/Principals/UploadFile';
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
                         <Route exact path='/login' element={<Login />}></Route>
                         <Route exact path='/pre' element={<Presentation />}></Route>
                         <Route exact path='/' element={<RequireAuth><Home/></RequireAuth>}></Route>
+                        <Route exact path='/uploadFile' element={<RequireAuth><UploadFile/></RequireAuth>}></Route>
 
                         {/* user */}
                         <Route path='/user/account' exact element={<RequireAuth><Account/></RequireAuth>}></Route>

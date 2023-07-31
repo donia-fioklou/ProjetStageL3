@@ -1,0 +1,36 @@
+
+import pandas as pd
+
+class Formulaire():
+    def __init__(self, df):
+        self.df = df
+    
+    def nettoyage(self):
+        # It seems like 'df' should be replaced with 'self.df' to refer to the class attribute
+        self.df=self.df.drop_duplicates(subset=['code'], keep='last')
+        self.df = self.df.drop_duplicates(subset=['Code Surface'], keep='last')
+        self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']] = self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']].fillna(0)
+        self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']] = self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']].replace(to_replace='.*', value=0, regex=True)
+        return self.df  
+    
+    
+    @staticmethod
+    def extractForm(df):
+        forms=[]
+        col_name=[]
+        
+        for col in df.columns:
+            col_name.append(col)
+            if 'Fin'in col:
+                forms.append(df.loc[:,col_name])
+                col_name=[]
+        return forms
+    
+    @staticmethod
+    def formConcatProductor(forms):
+        
+        formsConcatProductor=[]
+        for form in forms:  
+            if not form.equals(forms[0]):     
+                formsConcatProductor.append(pd.concat([forms[0],form],axis=1))
+        return formsConcatProductor

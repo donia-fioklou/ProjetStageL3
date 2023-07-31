@@ -20,6 +20,10 @@ class NumberOfProducer(APIView):
             df = df[df['Zone'] == zone]
         if union:
             df = df[df['Union'] == union]
+        #nombre parcelle
+        number_of_parcelle = df.shape[0]
+        #superficie totale
+        superficie_totale=df['Surface Parcelle'].sum()
         
         # Calculer le nombre de producteurs
         df = df.drop_duplicates(subset=['code'], keep='last')
@@ -27,7 +31,9 @@ class NumberOfProducer(APIView):
 
         # Créer une réponse JSON
         response_data = {
-            'number_of_producer': number_of_producer
+            'number_of_producer': number_of_producer,
+            'number_of_parcelle': number_of_parcelle,
+            'superficie_totale': superficie_totale,
         }
         tab_response_data = []
         tab_response_data.append(response_data)
@@ -43,6 +49,7 @@ class GenderStats(APIView):
         last_file=last_file.filePath
         df=pd.read_excel(last_file)
         df=Generale(df).nettoyage()
+        df=df.drop_duplicates(subset=['code'], keep='last')
         
         if zone:
             df = df[df['Zone'] == zone]
@@ -82,7 +89,7 @@ class ZoneStats(APIView):
         last_file=last_file.filePath
         df=pd.read_excel(last_file)
         df=Generale(df).nettoyage()
-        
+        df=df.drop_duplicates(subset=['code'], keep='last')
         
         if union:
             df = df[df['Union'] == union]
@@ -120,7 +127,7 @@ class LocalisationStats(APIView):
         last_file=last_file.filePath
         df=pd.read_excel(last_file)
         df=Generale(df).nettoyage()
-        
+        df=df.drop_duplicates(subset=['code'], keep='last')
         df = df.drop_duplicates(subset=['Code Surface'], keep='last')
         if zone:
             df = df[df['Zone'] == zone]
@@ -157,7 +164,7 @@ class PolygoneStats(APIView):
         last_file=last_file.filePath
         df=pd.read_excel(last_file)
         df=Generale(df).nettoyage()
-        
+        df=df.drop_duplicates(subset=['code'], keep='last')
         if zone:
             df = df[df['Zone'] == zone]
         if union:

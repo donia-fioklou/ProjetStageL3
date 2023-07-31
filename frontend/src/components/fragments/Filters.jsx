@@ -1,8 +1,4 @@
 import React, { useEffect,useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import Card from 'react-bootstrap/Card';
-import UploadFile from '../pages/Charts/HandleFileUpload';
-
 
 const Filters = ({zone,cooperative, upadateZone,updateCooperative}) => {
   const [listeZoneCooperative, setListeZoneCooperative] = useState({});
@@ -53,50 +49,40 @@ const Filters = ({zone,cooperative, upadateZone,updateCooperative}) => {
   };
 
   return (
-    <Form>
-      <div style={{ display: 'flex' }}>
-        {/* Filter by zone */}
-        <div style={{ marginRight: '20px' }}>
-          <Form.Group controlId="zoneFilter">
-          <Card.Title><Form.Label>Filtrer par zone </Form.Label></Card.Title>
-            <Form.Control as="select" value={zone} onChange={handleZoneChange}>
-            <option value="">-- Sélectionnez une Zone --</option>
-            {zones.map((option, index) => (
-                <option key={index} value={option}>
-                    {option}
-                </option>
-            ))}
-            </Form.Control>
-          </Form.Group>
-
-        </div>
-
-        {/* Filter by cooperative */}
-        <div style={{ marginRight: '20px' }}>
-          <Form.Group controlId="cooperativeFilter">
-          <Card.Title><Form.Label>Filtrer par coopérative </Form.Label></Card.Title>
-            <Form.Control as="select" value={cooperative} onChange={handleCooperativeChange}>
-            <option value="">-- Sélectionnez une coopérative --</option>
-              {cooperatives.map((coop) => (
-                <option key={coop} value={coop}>
-                  {coop}
-                </option>
-              ))}
-            
-            </Form.Control>
-          </Form.Group>
-        </div>
-        {/* Filter by cooperative */}
-        <div>
-          <Form.Group controlId="nouveauFichier">
-          <Card.Title><Form.Label>Nouveau Fichier </Form.Label></Card.Title>
-            <UploadFile/>
-          </Form.Group>
-        </div>
-        
+    <div>
+      <div >
+        <select id="zone" value={zone} onChange={handleZoneChange} className="form-control" style={{ marginBottom: '10px' }}>
+          <option value="">Zones</option>
+          {zones.map((option, index) => (
+            <option key={index} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
       </div>
-    </Form>
+    <div>
+      <select id="cooperative" value={cooperative} onChange={handleCooperativeChange} className="form-control" >
+        <option value="">Coopératives</option>
+        {cooperatives.map((coop, index) => (
+          <option key={index} value={coop}>
+            {coop}
+          </option>
+        ))}
+      </select>
+    </div>
+  </div>
+
+   
   );
 };
+// const selectContainerStyle = {
+//   marginBottom: '10px',
+// };
+
+// const selectStyle = {
+//   padding: '4px', 
+//   fontSize: '12px', 
+//   width: '100%',
+// };
 
 export default Filters;
