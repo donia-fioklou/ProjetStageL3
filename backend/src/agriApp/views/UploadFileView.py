@@ -5,6 +5,8 @@ from agriApp.models.File import File
 from rest_framework import status
 from rest_framework.response import Response
 
+from agriApp.views.importer import Importer
+
 
 class ExcelFileUploadView(ModelViewSet):
     serializer_class = FileSerializer
@@ -14,6 +16,7 @@ class ExcelFileUploadView(ModelViewSet):
         file_serializer = self.serializer_class(data=request.data)
         if file_serializer.is_valid():
             file_serializer.save()
+            #Importer.handle(file_serializer.data['filePath'])
             return Response(file_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

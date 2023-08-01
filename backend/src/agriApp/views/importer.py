@@ -1,15 +1,15 @@
 import pandas as pd
-from backend.src.agriApp.models import Formulaire
-from backend.src.agriApp.models.Cooperative import Cooperative
-from backend.src.agriApp.models.File import File
-from backend.src.agriApp.models.Parcelle import Parcelle
-from backend.src.agriApp.models.Producteur import Producteur
-from backend.src.agriApp.models.Question import Question
-from backend.src.agriApp.models.Reponse import Reponse
+from agriApp.models import Formulaire
+from agriApp.models.Cooperative import Cooperative
+from agriApp.models.File import File
+from agriApp.models.Parcelle import Parcelle
+from agriApp.models.Producteur import Producteur
+from agriApp.models.Question import Question
+from agriApp.models.Reponse import Reponse
 
-from backend.src.agriApp.models.Zone import Zone
-from backend.src.agriApp.models.parcelle_question import ParcelleQuestion
-from backend.src.agriApp.views.formulaire.formulaire import HandleFormulaire
+from agriApp.models.Zone import Zone
+from agriApp.models.parcelle_question import ParcelleQuestion
+from agriApp.views.formulaire.formulaire import HandleFormulaire
 
 class Importer():
     @staticmethod
@@ -35,15 +35,16 @@ class Importer():
             
             forms=HandleFormulaire.extractForm(df)
             for form in forms:
-                    if not Formulaire.objects.filter(name=form.at[1,'nomForm']).exists():
-                        formulaire=Formulaire.objects.create(name=form.at[1,'nomForm'],type=form.at[1,'typeForm'])
+                    if not Formulaire.objects.filter(name=form.at[index,'nomForm']).exists():
+                        formulaire=Formulaire.objects.create(name=form.at[index,'nomForm'],type=form.at[index,'typeForm'])
                     else:
-                        formulaire=Formulaire.objects.get(name=form.at[1,'nomForm'])
+                        formulaire=Formulaire.objects.get(name=form.at[index,'nomForm'])
                     questions=HandleFormulaire.extractQuestion(form)
                     for question in questions:
                         for col in question.columns:
                             if not Question.objects.filter(libelle=col).exists():
-                                question=Question.objects.create(libelle=col,typeQuestion=question.at[1,'Type Question'],formulaire=formulaire)
+                                question=Question.objects.create(libelle=col,typeQuestion=question.at[index,'Type Question'],formulaire=formulaire)
+                                ParcelleQuestion.objects.create(parcelle=parcelle,question=question)
                             else:
                                 question=Question.objects.get(libelle=col)
                             Reponse.objects.create(question=question,fichier=fichier,reponseBio=question.at[index,question['Bio']],libelle=question.at[index,question.libelle])

@@ -4,14 +4,6 @@ import { Helmet } from 'react-helmet';
 import Aside from '../../fragments/Aside';
 import Header from '../../fragments/Header';
 import PageHeader from '../../fragments/PageHeader';
-import Filters from '../../fragments/Filters'
-import GenderChart from '../Generale/GenderChart';
-import ZoneChart from '../Generale/ZoneChart';
-import Chart from "chart.js/auto";
-import { CategoryScale } from "chart.js";
-import LocalisationChart from '../Generale/LocalisationStats';
-import PolygoneChart from '../Generale/PolygoneChart';
-import NumberCard from '../../widgets/NumberCard';
 import HandleFileUpload from '../Generale/HandleFileUpload';
 
 const UploadFile=()=>{

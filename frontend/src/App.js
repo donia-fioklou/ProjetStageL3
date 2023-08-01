@@ -17,6 +17,7 @@ import Forbiden from './components/Err/403';
 import NotFound from './components/Err/404';
 import Account from './components/pages/Utilisateur/Account';
 import UploadFile from './components/pages/Principals/UploadFile';
+import Formulaire from './components/pages/Principals/Formulaire';
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
                         <Route exact path='/pre' element={<Presentation />}></Route>
                         <Route exact path='/' element={<RequireAuth><Home/></RequireAuth>}></Route>
                         <Route exact path='/uploadFile' element={<RequireAuth><UploadFile/></RequireAuth>}></Route>
+                        <Route exact path='/formulaire' element={<RequireAuth><Formulaire/></RequireAuth>}></Route>
 
                         {/* user */}
                         <Route path='/user/account' exact element={<RequireAuth><Account/></RequireAuth>}></Route>
