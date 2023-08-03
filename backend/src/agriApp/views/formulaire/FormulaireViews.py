@@ -12,7 +12,8 @@ class NumberOfForm(APIView):
         last_file=last_file.filePath
         df=pd.read_excel(last_file)
         forms=HandleFormulaire.extractForm(df)
-        numberForm=len(forms)
+        formsWithProductorInfo=HandleFormulaire.formConcatProductor(forms)
+        numberForm=len(formsWithProductorInfo)
         responseData={
             'numberForm':numberForm
         }
@@ -29,36 +30,53 @@ class FormFillRate(APIView):
         last_file=File.objects.last()
         last_file=last_file.filePath
         df=pd.read_excel(last_file)
+        df=HandleFormulaire(df).nettoyage()
         forms=HandleFormulaire.extractForm(df)
-        numberForm=len(forms)
+        
         
         for i in range(1, len(forms)):
             form = forms[i]
+            columnsToDrop = ['NomForm', 'TypeForm', 'Type Question', 'BIO']
+            for col in form.columns:
+                
+                for colToDrop in columnsToDrop:   
+                    if colToDrop in col:
+                        
+                        form.drop(col,axis=1,inplace=True)
             form['remplis'] = 0
+            
+            form.replace(r'^\s*$', pd.NA, regex=True, inplace=True)
+            
             for index, row in form.iterrows():
-                if row.notnull().any():
+                
+                num_cells_filled = row.notnull().sum()
+                
+                if num_cells_filled > 1:
                     form.loc[index,'remplis']=1
                 else:
                     form.loc[index,'remplis']=0
+            
         formsWithProductorInfo=HandleFormulaire.formConcatProductor(forms)
-        
-        
+        numberForm=len(formsWithProductorInfo)
         responseData={
             "numberForm":numberForm,
             "forms":[]
         }
-        idForm=0
+        
         for dfForm in formsWithProductorInfo:
             #number of productor with form['remplis']=1 and form['remplis']=0
-
+            dfForm=dfForm.fillna(value=0)
+            if zone:
+                dfForm=dfForm.loc[dfForm['Zone']==zone]
+            if union:
+                dfForm=dfForm.loc[dfForm['Union']==union]
             numberformRemplis=dfForm.loc[dfForm['remplis']==1].shape[0]
            
             numberFormNonRemplis=dfForm.loc[dfForm['remplis']==0].shape[0]
             
             productorformRemplis=dfForm.loc[dfForm['remplis']==1,[ 'code','Nom et Prénoms','Sexe','Contact','Village','Union','Zone','Code Surface','Surface Parcelle']]
-            productorformRemplis.fillna(value=0,inplace=True)
             productorformNonRemplis=dfForm.loc[dfForm['remplis']==0,[ 'code','Nom et Prénoms','Sexe','Contact','Village','Union','Zone','Code Surface','Surface Parcelle']]
-            productorformRemplis.fillna(value=0,inplace=True)
+            
             
             formData={
                 "numberformRemplis":numberformRemplis,
@@ -66,7 +84,7 @@ class FormFillRate(APIView):
                 "productorformRemplis":productorformRemplis.to_dict(orient='records'),
                 "productorformNonRemplis":productorformNonRemplis.to_dict(orient='records')
             }
-            idForm+=1
+            
             
             responseData.get('forms').append(formData)
         return Response(responseData)

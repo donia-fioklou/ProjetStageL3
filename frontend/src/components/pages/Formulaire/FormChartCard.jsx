@@ -1,5 +1,5 @@
 import PieChart from "../Charts/Pie";
-import { convertJsonToExcel } from './GenderChart';
+import { convertJsonToExcel } from '../Generale/GenderChart';
 const FormChartCard = ({ title, labels, labelsData,productorformRemplis,productorformNonRemplis }) => { 
     function handleDownload() {
         // Récupérer la valeur sélectionnée du filtre

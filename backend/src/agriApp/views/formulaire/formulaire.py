@@ -7,10 +7,9 @@ class HandleFormulaire():
     
     def nettoyage(self):
         # It seems like 'df' should be replaced with 'self.df' to refer to the class attribute
-        self.df=self.df.drop_duplicates(subset=['code'], keep='last')
         self.df = self.df.drop_duplicates(subset=['Code Surface'], keep='last')
-        self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']] = self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']].fillna(0)
-        self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']] = self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']].replace(to_replace='.*', value=0, regex=True)
+        self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']] = self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']].fillna('')
+        self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']] = self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']].replace(to_replace='.*', value='', regex=True)
         return self.df  
     
     
@@ -20,8 +19,10 @@ class HandleFormulaire():
         col_name=[]
         
         for col in df.columns:
-            col_name.append(col)
+            if 'Fin'not in col:
+                col_name.append(col)
             if 'Fin'in col:
+                #supprimer Fin dans col_name
                 forms.append(df.loc[:,col_name])
                 col_name=[]
         return forms
