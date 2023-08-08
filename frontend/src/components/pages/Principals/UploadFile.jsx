@@ -5,8 +5,27 @@ import Aside from '../../fragments/Aside';
 import Header from '../../fragments/Header';
 import PageHeader from '../../fragments/PageHeader';
 import HandleFileUpload from '../Generale/HandleFileUpload';
-
+import ClipLoader from 'react-spinners/ClipLoader';
 const UploadFile=()=>{
+    const [productorData, setProductorData]=useState([]);
+    const [loading, setLoading] = useState(false)
+    useEffect(()=>{
+        setLoading(true)
+        fetch('http://127.0.0.1:8000/api/render-data/')
+        .then((response) => response.json())
+        .then((data) => {
+            setProductorData(data);
+        })
+        .finally(() => {
+            setLoading(false)
+          })
+        .catch((error) => {
+            console.error('Error fetching number of producers:', error);
+          });
+
+    },[]
+
+    );
     return(
         <div>
             <div>
@@ -31,31 +50,43 @@ const UploadFile=()=>{
                                         <HandleFileUpload /> 
                                     </div>
                                 </div>
-
+                                    
 
                                     <div className="card-body">
+                                        {loading ? (
+                                                <div style={{ width: '100px', margin: 'auto', display: 'block' }}>
+                                                    <ClipLoader color="#52bfd9" size={100}/>
+                                                </div>
+                                        ) : (
                                         <table className="table table-separate table-head-custom">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Nom</th>
+                                                    <th>code</th>
+                                                    <th>Nom prénom</th>
+                                                    <th>sexe</th>
                                                     <th>contact</th>
-                                                    <th>zone</th>
-                                                    <th>coopérative</th>
+                                                    <th>village</th>
                                                     
                                                 </tr>
+
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Abalo</td>
-                                                    <td>92 47 43 15</td>
-                                                    <td>savane</td>
-                                                    <td>savane</td>
-
-                                                </tr>
+                                            {productorData.map((productor,index) => (
+                                            <tr key={productor.code}>
+                                                <td>{index +1}</td>
+                                                <td>{productor.code}</td>
+                                                <td>{productor.nomPrenom}</td>
+                                                <td>{productor.sexe}</td>
+                                                <td>{productor.contact}</td>
+                                                <td>{productor.village}</td>
+                                                
+                                            </tr>
+                                            ))}
                                             </tbody>
                                         </table>
+                                        
+                                        )}
                                     </div>
                                 </div> 
 

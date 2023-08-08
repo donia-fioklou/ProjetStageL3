@@ -8,6 +8,7 @@ import Filters from '../../fragments/Filters'
 import NumberCard from '../../widgets/NumberCard';
 import NumberForm from '../Formulaire/NumberForm';
 import FormChartCard from '../Formulaire/FormChartCard';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 const Formulaire=()=>{
     const [numberOfProducers, setNumberOfProducers] = useState(0);
@@ -17,10 +18,11 @@ const Formulaire=()=>{
     const [selectedCooperative,setSelectCooperative]=useState('');
     const [numberOfForm, setNumberOfForm]=useState(0);
     const [formsData,setformsData]=useState([]);
-    
+    const [loading, setLoading] = useState(false)
     
   
     useEffect(() => {
+        setLoading(true);
       // Fetch the number of producers
       fetch('http://127.0.0.1:8000/api/number-of-producer/')
         .then((response) => response.json())
@@ -39,7 +41,7 @@ const Formulaire=()=>{
         });
 
         const fetchFormData=async () => {
-            await fetch(`http://127.0.0.1:8000/api/form-fill-rate/`, {
+            await fetch(`http://127.0.0.1:8000/api/form-fill-rate/?zone=${selectedZone}&union=${selectedCooperative}`, {
               method: 'GET',
             })
             .then((response) => response.json())
@@ -47,6 +49,9 @@ const Formulaire=()=>{
                 setNumberOfForm(data.numberForm);
                 setformsData(data.forms);
                 console.log(data.forms.length);
+            })
+            .finally(() => {
+                setLoading(false)
             })
             .catch((error) => {
               console.error('Error fetching form data:', error);
@@ -84,14 +89,15 @@ const Formulaire=()=>{
                             <div className="container py-8">
                                 <div className='row'>
                                     <div className='col-lg-3'>
-                                        <NumberCard title='Nombre de producteurs' number={numberOfProducers} color={"primary"} />
-                                    </div>
-                                    <div className='col-lg-3'>
-                                        <NumberCard title='Superficie' number={superficie} color={"success"} />
-                                    </div>
-                                    <div className='col-lg-3'>
                                         <NumberForm/>
                                     </div>
+                                    <div className='col-lg-3'>
+                                        <NumberCard title='Producteur visité' number={numberOfProducers} color={"primary"} />
+                                    </div>
+                                    <div className='col-lg-3'>
+                                        <NumberCard title='Formulaire bien remplis' number={superficie} color={"success"} />
+                                    </div>
+                                    
                                     <div className='col-lg-3'>
                                         <Filters zone={selectedZone} cooperative={selectedCooperative} upadateZone={updateZone} updateCooperative={updateCooperative} />
                                     </div>
@@ -99,6 +105,15 @@ const Formulaire=()=>{
                                 
                                 
                             </div>
+                            {loading ? (
+                            <div className="container py-8">
+                                <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
+                                    <div style={{ width: '100px', margin: 'auto', display: 'block' }}>
+                                        <ClipLoader color="#52bfd9" size={100}/>
+                                    </div>
+                                </div>
+                            </div>
+                            ) : ( 
                                 
                             <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
                                 
@@ -117,27 +132,14 @@ const Formulaire=()=>{
                                         </div>
                                           )
 
-                                        
-
-
-                                          
 
                                           )
                                       }
                                         
                                         
                                     </div>
-                                    {/* <div className='row'>
-                                        <div className='col-lg-6'>
-                                            
-                                        </div>
-                                        <div className='col-lg-6'>
-                                            
-                                        </div>
-                                    </div> */}
-                                </div>
-
-                            </div>
+                                </div>                           </div>
+                            )}
                         </div>
                                 
                     </div>

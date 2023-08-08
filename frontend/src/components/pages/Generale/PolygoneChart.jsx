@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-
-
 import { Pie } from 'react-chartjs-2';
 import { convertJsonToExcel } from './GenderChart';
-
+import ClipLoader from 'react-spinners/ClipLoader';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 
@@ -16,6 +14,7 @@ const PolygoneChart = ({ selectedZone, selectedCooperative }) => {
   var baseUrl = `http://127.0.0.1:8000/api/polygone-stats/?zone=${selectedZone}&union=${selectedCooperative}`;
   const [remplisData,setRemplisData]=useState([]);
   const [nonRemplisData,setNonRemplisData]=useState([]);
+  const [loading,setLoading]=useState(true);
 
   function handleDownload() {
     // Récupérer la valeur sélectionnée du filtre
@@ -40,7 +39,11 @@ const PolygoneChart = ({ selectedZone, selectedCooperative }) => {
         setChart(data[0]);
         setRemplisData(data[0].productor_with_filled_count);
         setNonRemplisData(data[0].productor_with_not_filled_count);
-      });
+      })
+      .finally(() => {
+          setLoading(false)
+      }
+      );
     };
     fetchPolygoneStats()
   }, [baseUrl])
@@ -77,10 +80,20 @@ const PolygoneChart = ({ selectedZone, selectedCooperative }) => {
   }
 
   return (
+    <div>
+      {loading ? (
+        <div className="container py-8">
+            <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
+              <div style={{ width: '100px', margin: 'auto', display: 'block' }}>
+                <ClipLoader color="#52bfd9" size={100}/>
+              </div>
+            </div>
+        </div>
+        ) : ( 
     <div className="card card-custom gutter-b" style={{ height: '400px' }}>
       <div className="card-header h-auto">
           <div className="card-title py-5">
-              <h3 className="card-label">Taux de remplissage des polygones</h3>
+              <h3 className="card-label">Taux de remplissage des polygones(contour des parclles)</h3>
           </div>
       </div>
       <div className="card-body">
@@ -91,9 +104,12 @@ const PolygoneChart = ({ selectedZone, selectedCooperative }) => {
         />
       </div>
       <div className="card-footer">
+      <div className='col'>
+          <p style={{ marginRight: '20px' }}>Télécharger liste des producteurs</p>
         <div style={{ display: 'flex' }}>
+            
             <select id="polygoneFilter" className="form-control" style={{ marginRight: '20px' }}>
-              <option value="all">select</option>
+              <option value="all">selectionner</option>
               <option value="remplis">remplis</option>
               <option value="nonRemplis">non remplis</option>
             </select>  
@@ -111,6 +127,9 @@ const PolygoneChart = ({ selectedZone, selectedCooperative }) => {
             </a>
         </div>
       </div>
+      </div>
+    </div>
+    )}
     </div>
   )
 }

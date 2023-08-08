@@ -17,16 +17,18 @@ Chart.register(CategoryScale);
 const Home = () => {
 
     const [numberOfProducers, setNumberOfProducers] = useState(0);
-    const[number_of_parcelle,setNumber_of_parcelle]=useState(0);
-    const[superficie,setSuperficie]=useState(0);
+    const [number_of_parcelle,setNumber_of_parcelle]=useState(0);
+    const [superficie,setSuperficie]=useState(0);
     const [selectedZone,setSelectZone]=useState('');
     const [selectedCooperative,setSelectCooperative]=useState('');
+    const [loading, setLoading] = useState(false)
     
     
     
   
     useEffect(() => {
       // Fetch the number of producers
+      
       fetch('http://127.0.0.1:8000/api/number-of-producer/')
         .then((response) => response.json())
         .then((data) => {
@@ -37,8 +39,10 @@ const Home = () => {
             setNumber_of_parcelle(number_of_parcelle);
             const superficie=data[0]?.superficie_totale || 0;
             setSuperficie(superficie);
+            
 
         })
+       
         .catch((error) => {
           console.error('Error fetching number of producers:', error);
         });
@@ -52,13 +56,16 @@ const Home = () => {
     const updateCooperative=(cooperative)=>{
         setSelectCooperative(cooperative);
     };
+    const updateLoadgin=(value)=>{
+        setLoading(value);
+    };
    
 
     return (
         <div>
             <div>
                 <Helmet>
-                    <title>Accueil</title>
+                    <title>Générale</title>
                 </Helmet>
             </div>
             <Header />
@@ -75,10 +82,10 @@ const Home = () => {
                                         <NumberCard title='Nombre de producteurs' number={numberOfProducers} color={"primary"} />
                                     </div>
                                     <div className='col-lg-3'>
-                                        <NumberCard title='Superficie' number={superficie} color={"success"} />
+                                        <NumberCard title='Superficie' number={superficie+ 'ha'} color={"success"} />
                                     </div>
                                     <div className='col-lg-3'>
-                                        <NumberCard title='Parcelle' number={number_of_parcelle} color={"danger"}/>
+                                        <NumberCard title='Nombre de parcelle' number={number_of_parcelle} color={"danger"}/>
                                     </div>
                                     <div className='col-lg-3'>
                                         <Filters zone={selectedZone} cooperative={selectedCooperative} upadateZone={updateZone} updateCooperative={updateCooperative} />
@@ -87,7 +94,13 @@ const Home = () => {
                                 
                                 
                             </div>
-                                
+                            {loading ? (
+                                        <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
+                                            <div className="container py-8">
+                                                <div><h3>Chargement...</h3></div>
+                                            </div>
+                                        </div>
+                                        ) : ( 
                             <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
                                 
                                 <div className="container py-8">
@@ -109,7 +122,8 @@ const Home = () => {
                                     </div>
                                 </div>
 
-                            </div>
+                            </div>)
+                            }
                         </div>
                                 
                     </div>

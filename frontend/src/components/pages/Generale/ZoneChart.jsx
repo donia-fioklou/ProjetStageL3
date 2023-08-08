@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import {
   Chart as ChartJS,
-
   BarElement,
-
 } from 'chart.js';
-
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Bar } from 'react-chartjs-2';
 import { convertJsonToExcel } from './GenderChart';
-
+import ClipLoader from 'react-spinners/ClipLoader';
 ChartJS.register(
-  BarElement,
+  BarElement,ChartDataLabels
 );
+
 
 
 const ZoneChart = ({selectedCooperative}) => {
   const [chart, setChart] = useState({})
   const [productorData,setProductorData]=useState({})
   const [selectedZone,setSelectedZone]=useState('');
+  const [loading,setLoading]=useState(true);
   
 
   var baseUrl = `http://127.0.0.1:8000/api/zone-stats/?union=${selectedCooperative}&zone=${selectedZone}`;
@@ -44,7 +44,11 @@ const ZoneChart = ({selectedCooperative}) => {
       setChart(data[0]);
       setProductorData(data[1]);
       console.log(data[1]);
-    });
+    })
+    .finally(() => {
+        setLoading(false)
+    }
+    );
   };
 
   useEffect(() => {
@@ -60,25 +64,19 @@ const ZoneChart = ({selectedCooperative}) => {
       label: ``,
       data: Object.values(chart),
       backgroundColor: [
-        'rgba(255, 99, 132, 1)',
+        
         'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
+    
       ],
       borderColor: [
-        'rgba(255, 99, 132, 1)',
+       
         'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
+       
       ],
       borderWidth: 1
     }]
   };
-
+  
   var options = {
     maintainAspectRatio: false,
     scales: {
@@ -87,10 +85,21 @@ const ZoneChart = ({selectedCooperative}) => {
       labels: {
         fontSize: 25,
       },
+  
     },
   }
 
   return (
+  <div>
+    {loading ? (
+      <div className="container py-8">
+          <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
+            <div style={{ width: '100px', margin: 'auto', display: 'block' }}>
+              <ClipLoader color="#52bfd9" size={100}/>
+            </div>
+          </div>
+      </div>
+      ) : ( 
     
     <div className="card card-custom gutter-b" style={{ height: '400px' }}>
       <div className="card-header h-auto">
@@ -106,6 +115,8 @@ const ZoneChart = ({selectedCooperative}) => {
         />
       </div>
       <div className="card-footer">
+      <div className='col'>
+          <p style={{ marginRight: '20px' }}>Télécharger liste des producteurs</p>
         <div style={{ display: 'flex' }}>
           <select id="zoneFilter" className="form-control" style={{ marginRight: '20px' }} onChange={handleZoneChange}>
             <option value="all">select</option>
@@ -130,6 +141,9 @@ const ZoneChart = ({selectedCooperative}) => {
           </a>
         </div>
       </div>
+      </div>
+    </div>
+      )}
     </div>
         
     

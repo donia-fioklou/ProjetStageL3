@@ -3,7 +3,10 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import ClipLoader from 'react-spinners/ClipLoader';
+
 ChartJS.register(ArcElement, Tooltip, Legend);
+
 
 export const convertJsonToExcel = (json, file) => {
     // Créez un nouveau classeur
@@ -33,11 +36,13 @@ const GenderChart = ({ selectedZone, selectedCooperative }) => {
   const [chart, setChart] = useState([])
   const [FemData,setFemData]=useState([])
   const [MascData,setMascData]=useState([])
+  const [loading ,setLoading]=useState(true)
   var baseUrl = `http://127.0.0.1:8000/api/gender-stats/?zone=${selectedZone}&union=${selectedCooperative}`;
   
   
 
   function handleDownload() {
+    
     // Récupérer la valeur sélectionnée du filtre
     const selectedFilter = document.getElementById('genderFilter').value;
   
@@ -50,6 +55,7 @@ const GenderChart = ({ selectedZone, selectedCooperative }) => {
 
 
   useEffect(() => {
+    
     const fetchGenderStats = async () => {
       await fetch(`${baseUrl}`, {
         method: 'GET',
@@ -60,7 +66,11 @@ const GenderChart = ({ selectedZone, selectedCooperative }) => {
         setFemData(data[0].productor_fem)
         setMascData(data[0].productor_masc)
         console.log(data[0]);
-      });
+      })
+      .finally(() => {
+          setLoading(false)
+      }
+      );
     };
     fetchGenderStats()
   }, [baseUrl])
@@ -94,9 +104,20 @@ const GenderChart = ({ selectedZone, selectedCooperative }) => {
         fontSize: 25,
       },
     },
+  
   }
 
   return (
+    <div>
+    {loading ? (
+      <div className="container py-8">
+          <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
+            <div style={{ width: '100px', margin: 'auto', display: 'block' }}>
+              <ClipLoader color="#52bfd9" size={100}/>
+            </div>
+          </div>
+      </div>
+      ) : ( 
     <div class="card card-custom gutter-b" style={{ height: '400px' }}>
       <div class="card-header">
         <div class="card-title">
@@ -113,7 +134,10 @@ const GenderChart = ({ selectedZone, selectedCooperative }) => {
         />
       </div>
       <div className="card-footer">
+      <div className='col'>
+        <p style={{ marginRight: '20px' }}>Télécharger liste des producteurs</p>
         <div style={{ display: 'flex' }}>
+            
             <select id="genderFilter" className="form-control" style={{ marginRight: '20px' }}>
               <option value="all">select</option>
               <option value="homme">Homme</option>
@@ -132,14 +156,12 @@ const GenderChart = ({ selectedZone, selectedCooperative }) => {
                 </svg>
               </span>
             </a>
-        </div>      
+        </div>
+      </div>      
       </div>
       
+    </div>)}
     </div>
-    
-    
-      
-    
   )
 }
 

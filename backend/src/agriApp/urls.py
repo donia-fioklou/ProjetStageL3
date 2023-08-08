@@ -5,11 +5,13 @@ from agriApp.views.UploadFileView import ExcelFileUploadView
 from agriApp.views.filtre.filtre import FilterZoneCooperative
 from agriApp.views.formulaire.FormulaireViews import FormFillRate
 from agriApp.views.formulaire.FormulaireViews import NumberOfForm
+from agriApp.views.UploadFileView import RenderData
 
 app_name = 'agriApp'
 
 router = routers.SimpleRouter()
 router.register('upload-excel',ExcelFileUploadView,basename='upload-file')
+router.register('render-data',RenderData,basename='render-data')
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -11,5 +11,5 @@ class Producteur(models.Model):
     code=models.CharField(max_length=100)
     nomPrenom=models.CharField(max_length=100)
     sexe=models.CharField(max_length=1,choices=GENDER_CHOICES,null=True)
-    contact=models.IntegerField()
-    village=models.CharField(max_length=100)
+    contact=models.IntegerField(null=True)
+    village=models.CharField(max_length=100,null=True)

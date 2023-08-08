@@ -1,7 +1,8 @@
-//import React, { useState } from 'react';
-
+import React, { useState } from 'react';
+import ClipLoader from 'react-spinners/ClipLoader';
     const HandleFileUpload = () => {
         //const [selectedFile, setSelectedFile] = useState(null);
+        const [loading, setLoading] = useState(false)
 
         const handleFileUpload = async (event) => {
             const file = event.target.files[0];
@@ -15,33 +16,50 @@
             formData.append('filePath', file);
 
             try {
+                setLoading(true); // Enable loader
                 const response = await fetch(url, {
                     method: 'POST',
                     body: formData
                 });
                 const data = await response.json();
-                console.log(response);
-                alert("fichier uploadé avec succès");
+                if (response.status === 200){
+                    
+                    alert("fichier chargé avec succès");
+                }
+                setLoading(false); // Disable loader
+                
+                
                 window.location.reload();
                 //
                 
             } catch (error) {
+                setLoading(false); // Disable loader
                 console.error(error);
             }
         };
 
         return (
-            <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
-                {/* ... votre code JSX existant ... */}
-    
-                {/* Ajoutez le bouton d'upload de fichier ici */}
-                <div className="custom-file">
-                    <input type="file" className="custom-file-input " id="customFile" onChange={handleFileUpload} />
-                    <label className="custom-file-label" htmlFor="customFile">
-                        Nouveau fichier
-                    </label>
+            <div>
+                {loading ? (
+                <div className="container py-8">
+                    <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
+                        <div style={{ width: '100px', margin: 'auto', display: 'block' }}>
+                        <ClipLoader color="#52bfd9" size={100}/>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                ) : ( 
+            
+                    <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
+                        <div className="custom-file">
+                            <input type="file" className="custom-file-input " id="customFile" onChange={handleFileUpload} />
+                            <label className="custom-file-label" htmlFor="customFile">
+                                Nouveau fichier
+                            </label>
+                        </div>
+                    </div> 
+                )}
+    </div> 
         );
 
         

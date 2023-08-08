@@ -41,9 +41,10 @@ class HandleFormulaire():
         questions=[]
         col_name=[]
         #parcourir les colonnes à partir de la 3ème
+        print(form.columns[2:])
         for col in form.columns[2:]:
             col_name.append(col)
-            if 'Bio'in col:
+            if 'BIO'in col:
                 questions.append(form.loc[:,col_name])
                 col_name=[]
         return questions
