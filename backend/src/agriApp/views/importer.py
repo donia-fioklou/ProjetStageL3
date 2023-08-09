@@ -57,7 +57,8 @@ class Importer():
                             else:
                                 questionObjet=Question.objects.get(libelle=col)
                             Reponse.objects.create(question=questionObjet,fichier=fichier,reponseBio=question.at[index,Bio[0]],libelle=question.at[index,question.columns[1]])
-                        
+   
+                     
                                 
                                 
                         

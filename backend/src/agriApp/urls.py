@@ -6,6 +6,7 @@ from agriApp.views.filtre.filtre import FilterZoneCooperative
 from agriApp.views.formulaire.FormulaireViews import FormFillRate
 from agriApp.views.formulaire.FormulaireViews import NumberOfForm
 from agriApp.views.UploadFileView import RenderData
+from agriApp.views.formulaire.FormulaireViews import RapportForm
 
 app_name = 'agriApp'
 
@@ -19,6 +20,7 @@ urlpatterns = [
     path('number-of-form/',NumberOfForm.as_view(),name='number-of-form'),
     path('filter-zone-cooperative/',FilterZoneCooperative.as_view(),name='filter-zone'),
     path('form-fill-rate/',FormFillRate.as_view(),name='form-fill-rate'),
+    path('form-rapport/',RapportForm.as_view(),name='form-rapport'),
     path('gender-stats/', GenderStats.as_view(),name='gender-stats'),
     path('zone-stats/',ZoneStats.as_view(),name='zone-stats'),
     path('localisation-stats/',LocalisationStats.as_view(),name='localisation-stats'),

@@ -19,7 +19,7 @@ const Formulaire=()=>{
     const [numberOfForm, setNumberOfForm]=useState(0);
     const [formsData,setformsData]=useState([]);
     const [loading, setLoading] = useState(false)
-    
+    var baseUrl =`http://127.0.0.1:8000/api/form-fill-rate/?zone=${selectedZone}&union=${selectedCooperative}`;
   
     useEffect(() => {
         setLoading(true);
@@ -38,17 +38,18 @@ const Formulaire=()=>{
         })
         .catch((error) => {
           console.error('Error fetching number of producers:', error);
-        });
+        }); 
 
-        const fetchFormData=async () => {
-            await fetch(`http://127.0.0.1:8000/api/form-fill-rate/?zone=${selectedZone}&union=${selectedCooperative}`, {
+        
+            fetch(`${baseUrl}`, {
               method: 'GET',
             })
             .then((response) => response.json())
             .then((data) => {
                 setNumberOfForm(data.numberForm);
                 setformsData(data.forms);
-                console.log(data.forms.length);
+                console.log("coop"+selectedZone);
+                console.log("union"+selectedCooperative);
             })
             .finally(() => {
                 setLoading(false)
@@ -56,12 +57,16 @@ const Formulaire=()=>{
             .catch((error) => {
               console.error('Error fetching form data:', error);
             });
-        }
-        fetchFormData();
-  
+        
+        // return ()=>{
+        //     fetchFormData();
+        //     cardFetch();
+        // }
+    console.log("use effect");
      
     
-    }, []);
+    }, [baseUrl]);
+
     const updateZone=(zone)=>{
         setSelectZone(zone);
     };
@@ -123,7 +128,8 @@ const Formulaire=()=>{
                                           formsData.map((form,index)=>(
                                             <div className='col-lg-6'>
                                             <FormChartCard 
-                                            title={`Formulaire${index + 1}`} 
+                                            title={form.nomForm} 
+                                            formId={index+1}
                                             labels={['remplis', 'non remplis']} 
                                             labelsData={[form.numberformRemplis, form.numberFormNonRemplis]} 
                                             productorformRemplis={form.productorformRemplis} 

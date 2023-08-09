@@ -20,7 +20,7 @@ class ExcelFileUploadView(ModelViewSet):
         if file_serializer.is_valid():
             file_serializer.save()
             lastFile=File.objects.last()
-            Importer.handle(lastFile.filePath)
+            #Importer.handle(lastFile.filePath)
             return Response(file_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

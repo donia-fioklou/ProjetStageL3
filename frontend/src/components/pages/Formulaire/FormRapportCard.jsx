@@ -2,33 +2,30 @@ import PieChart from "../Charts/Pie";
 import { convertJsonToExcel } from '../Generale/GenderChart';
 import { useNavigate } from 'react-router-dom';
 
-const FormChartCard = ({ title,formId, labels, labelsData,productorformRemplis,productorformNonRemplis }) => { 
-    function handleDownload() {
-        // Récupérer la valeur sélectionnée du filtre
-        const selectedFilter = document.getElementById('formFilter').value;
+const FormRapportCard = ({ title,formId, labels, labelsData,productorformRemplis,productorformNonRemplis }) => { 
+    // function handleDownload() {
+    //     // Récupérer la valeur sélectionnée du filtre
+    //     const selectedFilter = document.getElementById('formFilter').value;
       
-        if (selectedFilter === 'remplis') {
-          convertJsonToExcel(productorformRemplis, "productorformRemplis");
-        } else if (selectedFilter === 'nonRemplis') {
-          convertJsonToExcel(productorformNonRemplis, "productorformNonRemplis");
-        } 
-      }
+    //     if (selectedFilter === 'remplis') {
+    //       convertJsonToExcel(productorformRemplis, "productorformRemplis");
+    //     } else if (selectedFilter === 'nonRemplis') {
+    //       convertJsonToExcel(productorformNonRemplis, "productorformNonRemplis");
+    //     } 
+    //   }
     const navigate = useNavigate();
     console.log(formId)
     return (
         <div className='card card-custom gutter-b' style={{ height: '400px' }}>
             <div className='card-header'>
-                <div className='card-title'>
-                    <a onClick={() => { navigate(`/rapportFormulaire/${formId}`) }}>
+                <div className='card-title'>            
                         <h3 className='card-label'>{title}</h3>
-                    </a>
-                    
                 </div>
             </div>
             <div className='card-body'>
                 <PieChart labels={labels} labelsData={labelsData} />
             </div>
-            <div className="card-footer">
+            {/* <div className="card-footer">
             <div className='col'>
                 <p style={{ marginRight: '20px' }}>Télécharger liste des producteurs</p>
                 <div style={{ display: 'flex' }}>
@@ -53,8 +50,50 @@ const FormChartCard = ({ title,formId, labels, labelsData,productorformRemplis,p
                                 </div>
             </div>
                 
-            </div>      
+            </div>       */}
         </div>
     );
 }
-export default FormChartCard;
+
+
+const NumberRapportCard=({title,sum,moy,max,min})=>{
+    return(
+        <div className='card card-custom gutter-b' style={{ height: '400px' }}>
+            <div className='card-header'>
+                <div className='card-title'>            
+                        <h3 className='card-label'>{title}</h3>
+                </div>
+            </div>
+            <div className='card-body' >
+                {/*table with 4 cellules */}
+                <table className='table'>
+                    <tbody>
+                        <tr>
+                            <td>Somme : {sum}</td>
+                            <td>Moyenne : {moy} </td>
+                            
+                        </tr>
+                        <tr>
+                            <td>Minimum : {min}</td>
+                            
+                            <td>Maximum : {max}</td>
+                            
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+                
+            </div>
+            
+        </div>
+
+    );
+
+
+}
+export default FormRapportCard;
+export  {NumberRapportCard};
