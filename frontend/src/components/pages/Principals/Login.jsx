@@ -8,22 +8,63 @@ const Login = () => {
     const [error, setError] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [token, setToken] = useState("");
+    const [refreshToken ,setRefreshToken]=useState("");
 
     const navigate = useNavigate()
 
     const { dispatch } = useContext(AuthContext)
-
+    const formData = new FormData();
+    formData.append('username', email);
+    formData.append('password', password);
+    formData.append('device',1)
     const handleLogin = (e) => {
         e.preventDefault();
-
-        if (email === "admin@admin.a" && password === "1234567890") {
-            localStorage.setItem('uid', "admin@admin.a")
-            localStorage.setItem('pass', "1234567890")
-            dispatch({ type: "LOGIN", payload: "admin@admin.a" })
-            navigate("/")
-        } else {
-            setError(true)
+        fetch('https://test.coo.tg/traite/connexion/info',{
+            method: 'POST',
+            body: formData,
+            headers:{'content-Type':'application/json'},
         }
+        )
+        .then((response) => response.json())
+        .then((data)=>{
+            setToken(data.token);
+            setRefreshToken(data.refresh_token);
+
+            fetch('https://test.ooo.tg/traite/me/info',{
+                header:{
+                    'Content-Type':'application/json',
+                    'Authorization':'Bearer '+token,
+                }
+            }).then(
+                (response)=>response.json()
+            ).then((data)=>{
+                console.log(data);
+                if(data["etatconnexion"]){
+                    localStorage.setItem('uid', email)
+                    
+                    dispatch({ type: "LOGIN", payload: email })
+                    navigate("/");
+
+                }
+                
+            }
+            )
+
+        })
+        .catch((error) => {
+            console.error('Error fetching form data:', error);
+        });
+        
+
+        // if (email === "admin@admin.a" && password === "1234567890") {
+        //     localStorage.setItem('uid', "admin@admin.a")
+        //     localStorage.setItem('pass', "1234567890")
+        //     dispatch({ type: "LOGIN", payload: "admin@admin.a" })
+        //     navigate("/")
+        // } else {
+        //     setError(true)
+        // }
 
 
     }
@@ -51,7 +92,7 @@ const Login = () => {
                                 </div>
                                 <form className='form' id='login' onSubmit={handleLogin}>
                                     <div className='form-group mb-5'>
-                                        <input className='form-control h-auto form-control-solid py-4 px-8' type='email' placeholder='Email' autoComplete='off' onChange={e => setEmail(e.target.value)} />
+                                        <input className='form-control h-auto form-control-solid py-4 px-8' type='text' placeholder="nom d'utilisateur" autoComplete='off' onChange={e => setEmail(e.target.value)} />
                                     </div>
                                     <div className='form-group mb-5'>
                                         <input className='form-control h-auto form-control-solid py-4 px-8' id='password' type='password' placeholder='Mot de passe' name='password' onChange={e => setPassword(e.target.value)} />

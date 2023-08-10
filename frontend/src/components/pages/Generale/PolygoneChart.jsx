@@ -80,7 +80,15 @@ const PolygoneChart = ({ selectedZone, selectedCooperative }) => {
   }
 
   return (
-    <div>
+    
+      
+    <div className="card card-custom gutter-b" style={{ height: '400px' }}>
+      <div className="card-header h-auto">
+          <div className="card-title py-5">
+              <h3 className="card-label">Taux de remplissage des polygones(contour des parclles)</h3>
+          </div>
+      </div>
+      <div className="card-body">
       {loading ? (
         <div className="container py-8">
             <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -90,18 +98,11 @@ const PolygoneChart = ({ selectedZone, selectedCooperative }) => {
             </div>
         </div>
         ) : ( 
-    <div className="card card-custom gutter-b" style={{ height: '400px' }}>
-      <div className="card-header h-auto">
-          <div className="card-title py-5">
-              <h3 className="card-label">Taux de remplissage des polygones(contour des parclles)</h3>
-          </div>
-      </div>
-      <div className="card-body">
         <Pie
           data={data}
           height={400}
           options={options}
-        />
+        />)}
       </div>
       <div className="card-footer">
       <div className='col'>
@@ -129,8 +130,8 @@ const PolygoneChart = ({ selectedZone, selectedCooperative }) => {
       </div>
       </div>
     </div>
-    )}
-    </div>
+   
+    
   )
 }
 

@@ -94,6 +94,9 @@ class FormFillRate(APIView):
 class RapportForm(APIView):
     def get(self, request):
         formId=request.GET.get('formId', None)
+        filterBaseQuestion=request.GET.get('filterBaseQuestion',None)
+        filterBaseResponse=request.GET.get('filterBaseResponse',None)
+        
         formId=int(formId)
         last_file=File.objects.last()
         last_file=last_file.filePath
@@ -110,16 +113,27 @@ class RapportForm(APIView):
         forms=HandleFormulaire.extractForm(df)
         form=forms[formId]   
         questions=HandleFormulaire.extractQuestion(form)
+        tabResponseData=[]
         responseData={}
         for question in questions:
             questionType=[col for col in question.columns if 'Type Question' in col]
             if question.at[1,questionType[0]] in [2,3]: 
                 questionLibelle=question.columns[1]
                 countOfResponse=question.groupby(questionLibelle).size().reset_index(name='count')
+                
                 dicCountOfResponse={}
                 for index, row in countOfResponse.iterrows():
                     dicCountOfResponse[row[questionLibelle]] = row['count'] 
-                responseData[questionLibelle]=dicCountOfResponse
+                    
+                responseData[questionLibelle]=dicCountOfResponse 
+                tabResponseData.append(responseData)  
+                if filterBaseQuestion and filterBaseResponse:   
+                    productorInfo=df.loc[df[filterBaseQuestion] == filterBaseResponse ,[ 'code','Nom et Prénoms','Sexe','Contact','Village','Union','Zone','Code Surface','Surface Parcelle']]
+                     
+                    productorInfo.fillna(value=0,inplace=True)
+                    productorInfo=productorInfo.to_dict(orient='records') 
+                    tabResponseData.append(productorInfo)  
+                
             elif question.at[1,questionType[0]] == 6 :
                 questionLibelle=question.columns[1]
                 
@@ -137,10 +151,11 @@ class RapportForm(APIView):
                     'max':maxQuestion,
                     'min':minQuestion
                 }
+        
                 
                 
                 
-        return Response(responseData)
+        return Response(tabResponseData)
         
         
         

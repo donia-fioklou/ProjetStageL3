@@ -22,7 +22,7 @@ const Formulaire=()=>{
     var baseUrl =`http://127.0.0.1:8000/api/form-fill-rate/?zone=${selectedZone}&union=${selectedCooperative}`;
   
     useEffect(() => {
-        setLoading(true);
+    setLoading(true);
       // Fetch the number of producers
       fetch('http://127.0.0.1:8000/api/number-of-producer/')
         .then((response) => response.json())

@@ -90,8 +90,15 @@ const ZoneChart = ({selectedCooperative}) => {
   }
 
   return (
-  <div>
-    {loading ? (
+  
+    <div className="card card-custom gutter-b" style={{ height: '400px' }}>
+      <div className="card-header h-auto">
+          <div className="card-title py-5">
+              <h3 className="card-label">Répartition par zone des producteurs</h3>
+          </div>
+      </div>
+      <div className="card-body">
+      {loading ? (
       <div className="container py-8">
           <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
             <div style={{ width: '100px', margin: 'auto', display: 'block' }}>
@@ -100,19 +107,11 @@ const ZoneChart = ({selectedCooperative}) => {
           </div>
       </div>
       ) : ( 
-    
-    <div className="card card-custom gutter-b" style={{ height: '400px' }}>
-      <div className="card-header h-auto">
-          <div className="card-title py-5">
-              <h3 className="card-label">Répartition par zone des producteurs</h3>
-          </div>
-      </div>
-      <div className="card-body">
         <Bar
             data={data}
             height={400}
             options={options}
-        />
+        />)}
       </div>
       <div className="card-footer">
       <div className='col'>
@@ -143,8 +142,7 @@ const ZoneChart = ({selectedCooperative}) => {
       </div>
       </div>
     </div>
-      )}
-    </div>
+     
         
     
   )

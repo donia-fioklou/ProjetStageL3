@@ -108,16 +108,8 @@ const GenderChart = ({ selectedZone, selectedCooperative }) => {
   }
 
   return (
-    <div>
-    {loading ? (
-      <div className="container py-8">
-          <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
-            <div style={{ width: '100px', margin: 'auto', display: 'block' }}>
-              <ClipLoader color="#52bfd9" size={100}/>
-            </div>
-          </div>
-      </div>
-      ) : ( 
+    
+    
     <div class="card card-custom gutter-b" style={{ height: '400px' }}>
       <div class="card-header">
         <div class="card-title">
@@ -127,11 +119,20 @@ const GenderChart = ({ selectedZone, selectedCooperative }) => {
         </div>
       </div>
       <div class="card-body">
+      {loading ? (
+      <div className="container py-8">
+          <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
+            <div style={{ width: '100px', margin: 'auto', display: 'block' }}>
+              <ClipLoader color="#52bfd9" size={100}/>
+            </div>
+          </div>
+      </div>
+      ) : ( 
         <Pie
           data={data}
           height={400}
           options={options}
-        />
+        />)}
       </div>
       <div className="card-footer">
       <div className='col'>
@@ -160,8 +161,8 @@ const GenderChart = ({ selectedZone, selectedCooperative }) => {
       </div>      
       </div>
       
-    </div>)}
     </div>
+    
   )
 }
 

@@ -56,9 +56,7 @@ const Home = () => {
     const updateCooperative=(cooperative)=>{
         setSelectCooperative(cooperative);
     };
-    const updateLoadgin=(value)=>{
-        setLoading(value);
-    };
+   
    
 
     return (

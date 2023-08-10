@@ -18,9 +18,10 @@ const FormChartCard = ({ title,formId, labels, labelsData,productorformRemplis,p
     return (
         <div className='card card-custom gutter-b' style={{ height: '400px' }}>
             <div className='card-header'>
-                <div className='card-title'>
-                    <a onClick={() => { navigate(`/rapportFormulaire/${formId}`) }}>
-                        <h3 className='card-label'>{title}</h3>
+                <div className='card-title' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h3 className='card-label' >{title}</h3>
+                    <a onClick={() => { navigate(`/rapportFormulaire/${formId}`) }} className="btn btn-primary btn-sm">
+                       détails
                     </a>
                     
                 </div>

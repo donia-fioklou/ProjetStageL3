@@ -9,11 +9,14 @@ import { NumberRapportCard } from '../Formulaire/FormRapportCard';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { useParams } from 'react-router-dom';
 const RapportFormulaire=()=>{
-    const [formsData,setformsData]=useState({});
+    const [questionData,setQuestionData]=useState({});
+    const [productorData,setProductorData]=useState([]);
     const [loading, setLoading] = useState(false)
+    const [filterBaseQuestion,setFilterBaseQuestion]=useState('');
+    const [filterBaseResponse,setFilterBaseResponse]=useState('');
     const params = useParams()
     var baseUrl =`http://127.0.0.1:8000/api/form-rapport/?formId=${params.id}`;
-  
+    
     useEffect(() => {
         setLoading(true);
         fetch(`${baseUrl}`, {
@@ -21,8 +24,8 @@ const RapportFormulaire=()=>{
         })
         .then((response) => response.json())
         .then((data) => {
-            setformsData(data);
-            console.log("rapport form"+formsData);
+            setQuestionData(data[0]);
+            
         })
         .finally(() => {
             setLoading(false)
@@ -31,7 +34,15 @@ const RapportFormulaire=()=>{
             console.error('Error fetching form data:', error);
         });
     
-    }, [baseUrl]);
+    }, []);
+
+    // const updateFilterBaseQuestion=(value)=>{
+    //     setFilterBaseQuestion(value);
+    // }
+    // const updateFilterBaseResponse=(value)=>{
+    //     setFilterBaseResponse(value);
+    // }
+
     return(
         <div>
             <div>
@@ -80,7 +91,7 @@ const RapportFormulaire=()=>{
                                     
                                     <div className="container py-8">
                                         <div className='row'>
-                                        {Object.entries(formsData).map(([key, value]) => (
+                                        {Object.entries(questionData).map(([key, value]) => (
                                             <div className='col-lg-6' key={key}>
                                                 { value.hasOwnProperty('sum') || value.hasOwnProperty('moy')? (
                                                     <NumberRapportCard 
@@ -94,7 +105,8 @@ const RapportFormulaire=()=>{
                                                     <FormRapportCard 
                                                         title={key} 
                                                         labels={Object.keys(value)} 
-                                                        labelsData={Object.values(value)} 
+                                                        labelsData={Object.values(value)}
+                                                        paramId={params.id}
                                                     />
                                                 )}
                                             </div>
