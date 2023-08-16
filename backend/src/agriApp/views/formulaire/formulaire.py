@@ -6,10 +6,12 @@ class HandleFormulaire():
         self.df = df
     
     def nettoyage(self):
-        # It seems like 'df' should be replaced with 'self.df' to refer to the class attribute
-        #self.df = self.df.drop_duplicates(subset=['Code Surface'], keep='last')
-        self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']] = self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']].fillna('')
-        self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']] = self.df[['Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']].replace(to_replace='.*', value='', regex=True)
+        # Supprimer les espaces en début et fin de chaînes de caractères
+        colonneTexte = self.df.select_dtypes(include=['object']).columns
+        self.df[colonneTexte] = self.df[colonneTexte].apply(lambda x: x.str.strip() if x.dtype == "object" else x)
+        # Convertir les valeurs non numériques en NaN dans les colonnes numériques
+        colonneNumerique = self.df.select_dtypes(include=['int64', 'float64']).columns
+        self.df[colonneNumerique] = self.df[colonneNumerique].apply(pd.to_numeric, errors='coerce')
         return self.df  
     
     

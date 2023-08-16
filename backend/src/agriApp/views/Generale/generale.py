@@ -18,20 +18,14 @@ class Generale():
     #     return None
 
     def nettoyage(self):
-            numericColumn=['Contact','Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']
-            self.df = self.df.drop_duplicates(subset=['Code Surface'], keep='last')
-            self.df[numericColumn] = self.df[numericColumn].fillna(0)
-            self.df[numericColumn] = self.df[numericColumn].replace(to_replace='.*', value=0, regex=True)
-            self.df.replace('',None,inplace=True)
+        # Supprimer les espaces en début et fin de chaînes de caractères
+        colonneTexte = self.df.select_dtypes(include=['object']).columns
+        self.df[colonneTexte] = self.df[colonneTexte].apply(lambda x: x.str.strip() if x.dtype == "object" else x)
 
-            # int_fields = ['Contact','Quantité vendu en 2021(en Tonne)', 'Age de la plantation', 'Nombre de plants']
-            # for field in int_fields:
-            #     self.df[field] = self.df[field].apply(self.check_and_fix_numeric)
-
-            # string_fields = ['Zone', 'Union', 'Nom et Prénoms', 'Village', 'Code Surface', 'Surface Parcelle', 'Si Parcelle', 'Si Polygon', 'Varieté']
-            # for field in string_fields:
-            #     self.df[field] = self.df[field].apply(self.check_and_fix_string)
-            return self.df  
+        # Convertir les valeurs non numériques en NaN dans les colonnes numériques
+        colonneNumerique = self.df.select_dtypes(include=['int64', 'float64']).columns
+        self.df[colonneNumerique] = self.df[colonneNumerique].apply(pd.to_numeric, errors='coerce')
+        return self.df 
         
 
    
