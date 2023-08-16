@@ -85,8 +85,54 @@ const NumberRapportCard=({title,sum,moy,max,min})=>{
                 </div>
             </div>
             <div className='card-body' >
-                {/*table with 4 cellules */}
-                <table className='table'>
+            <div class="card-spacer bg-white card-rounded flex-grow-1">
+                            <div class="row m-0">
+                                <div class="col  py-6 mr-4">
+                                    <div class="font-size-sm text-muted font-weight-bold mb-2">
+                                            Somme
+                                    </div>
+                                    <div class="font-size-h4 font-weight-bolder">
+                                        <a  class="menu-link ">
+                                            {sum}
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col  py-6">
+                                    <div class="font-size-sm text-muted font-weight-bold mb-2 text-right">
+                                        Moyenne 
+                                    </div>
+                                    <div class="font-size-h4 font-weight-bolder text-right">
+                                         <a  class="menu-link ">
+                                         {moy}
+                                        </a>    
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row m-0">
+                                <div class="col  py-6 mr-4">
+                                    <div class="font-size-sm text-muted font-weight-bold">
+                                        Maximum  
+                                    </div>
+                                    <div class="font-size-h4 font-weight-bolder">
+                                        {max}
+                                    </div>
+                                </div>
+                                <div class="col  py-6">
+                                    <div class="font-size-sm text-muted font-weight-bold text-right">
+                                        Minimum
+                                    </div>
+                                    <div class="font-size-h4 font-weight-bolder text-right">
+                                        <a  class="menu-link ">
+                                            {min}                                                                               
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                
+                {/* <table className='table'>
                     <tbody>
                         <tr>
                             <td>Somme : {sum}</td>
@@ -105,7 +151,7 @@ const NumberRapportCard=({title,sum,moy,max,min})=>{
                         </tr>
                         
                     </tbody>
-                </table>
+                </table> */}
                 
             </div>
             

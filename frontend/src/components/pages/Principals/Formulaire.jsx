@@ -111,13 +111,55 @@ const Formulaire=()=>{
                                 
                             </div>
                             {loading ? (
-                            <div className="container py-8">
                                 <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
-                                    <div style={{ width: '100px', margin: 'auto', display: 'block' }}>
-                                        <ClipLoader color="#52bfd9" size={100}/>
+                                
+                                    <div className="container py-8">
+                                        <div className='row'>
+                                            <div className='col-lg-6'>
+                                                <div className='card card-custom gutter-b' style={{ height: '400px' }}>
+                                                    <div className='card-header'>
+                                                        <div className='card-title' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                            
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div className='card-body'>
+                                                        <div style={{ width: '100px', margin: 'auto', display: 'block' }}>
+                                                            <ClipLoader color="#52bfd9" size={100}/>
+                                                        </div>  
+                                                    </div>
+                                                    <div className="card-footer">
+                                                        <div className='col'>
+                                                            
+                                                        </div>    
+                                                    </div>      
+                                                </div>
+                                            </div>
+                                            <div className='col-lg-6'>
+                                                <div className='card card-custom gutter-b' style={{ height: '400px' }}>
+                                                    <div className='card-header'>
+                                                        <div className='card-title' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                            
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div className='card-body'>
+                                                        <div style={{ width: '100px', margin: 'auto', display: 'block' }}>
+                                                            <ClipLoader color="#52bfd9" size={100}/>
+                                                        </div>  
+                                                    </div>
+                                                    <div className="card-footer">
+                                                        <div className='col'>
+                                                            
+                                                        </div>    
+                                                    </div>      
+                                                </div>
+                                            </div>
+
+                                        
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             ) : ( 
                                 
                             <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
