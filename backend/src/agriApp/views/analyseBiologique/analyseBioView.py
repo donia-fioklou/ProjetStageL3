@@ -25,6 +25,15 @@ class AnalyseBio(APIView):
                         scoreAmdec=sommeAmdec(question.loc[index,amdec])
                         question.loc[index,'scoreBio']=question.loc[index,bio]*scoreAmdec
         dfWithScoreBio=HandleFormulaire.formConcatProductor(forms)
-        for col in form
+        dfWithScoreBio['totalScoreBio']=0
+        
+        for index,row in dfWithScoreBio.iterrows():
+            for col in dfWithScoreBio.columns:
+                if 'scoreBio' in col:
+                    dfWithScoreBio.loc[index,'totalScoreBio']=dfWithScoreBio.loc[index,'totalScoreBio']+dfWithScoreBio.loc[index,col]
+            dfWithScoreBio.loc[index,'totalScoreBio']=dfWithScoreBio.loc[index,'totalScoreBio']/sumBio
+                
+        return Response(dfWithScoreBio.to_json(orient="records"))
+            
             
         
