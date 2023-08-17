@@ -7,6 +7,7 @@ from agriApp.views.formulaire.FormulaireViews import FormFillRate
 from agriApp.views.formulaire.FormulaireViews import NumberOfForm
 from agriApp.views.UploadFileView import RenderData
 from agriApp.views.formulaire.FormulaireViews import RapportForm
+from agriApp.views.analyseBiologique.analyseBioView import AnalyseBio
 
 app_name = 'agriApp'
 
@@ -25,5 +26,6 @@ urlpatterns = [
     path('zone-stats/',ZoneStats.as_view(),name='zone-stats'),
     path('localisation-stats/',LocalisationStats.as_view(),name='localisation-stats'),
     path('polygone-stats/',PolygoneStats.as_view(),name='polygone-stats'),
+    path('analyse-bio/', AnalyseBio.as_view(),name='analyse-bio')
     
 ]
