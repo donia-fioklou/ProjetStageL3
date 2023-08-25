@@ -14,13 +14,16 @@ const Login = () => {
     const navigate = useNavigate()
 
     const { dispatch } = useContext(AuthContext)
-    /*const formData = new FormData();
-    formData.append('username', email);
-    formData.append('password', password);
-    formData.append('device',1)*/
 
-
-    
+    // const formData = new FormData();
+    // formData.append('username', email);
+    // formData.append('password', password);
+    // formData.append('device',1)
+    const formData ={
+        "username":email,
+        "password":password,
+        "device":1
+    }
     const handleLogin = (e) => {
         e.preventDefault();
         const formData ={
