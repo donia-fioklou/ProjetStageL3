@@ -28,14 +28,15 @@ const Login = () => {
         fetch('https://test.coo.tg/traite/connexion/info',{
             method: 'POST',
             body: formData,
-            headers:{'content-Type':'application/json'},
+            headers:{'content-Type':'application/json',
+            'Access-Control-Allow-Origin': '*'},
         }
         )
         .then((response) => response.json())
         .then((data)=>{
             setToken(data.token);
             setRefreshToken(data.refresh_token);
-
+            console.log("token"+data.token);
             fetch('https://test.ooo.tg/traite/me/info',{
                 header:{
                     'Content-Type':'application/json',

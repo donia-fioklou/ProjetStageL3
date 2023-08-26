@@ -19,14 +19,14 @@ import Account from './components/pages/Utilisateur/Account';
 import UploadFile from './components/pages/Principals/UploadFile';
 import Formulaire from './components/pages/Principals/Formulaire';
 import RapportFormulaire from './components/pages/Principals/RapportForm';
-
+import AnalyseBio from './components/pages/Principals/AnalyseBio';
 function App() {
 
     const { currentUser } = useContext(AuthContext)
 
     const RequireAuth = ({ children }) => {
-        return currentUser ? (children) : <Navigate to={"/login"} />;
-        //return  children;
+        //return currentUser ? (children) : <Navigate to={"/login"} />;
+        return  children;
     }
 
     return (
@@ -40,7 +40,7 @@ function App() {
                         <Route exact path='/uploadFile' element={<RequireAuth><UploadFile/></RequireAuth>}></Route>
                         <Route exact path='/formulaire' element={<RequireAuth><Formulaire/></RequireAuth>}></Route>
                         <Route exact path='/rapportFormulaire/:id' element={<RequireAuth><RapportFormulaire/></RequireAuth>}></Route>
-
+                        <Route exact path='/analyseBio' element={<RequireAuth><AnalyseBio/></RequireAuth>}></Route>
                         {/* user */}
                         <Route path='/user/account' exact element={<RequireAuth><Account/></RequireAuth>}></Route>
 

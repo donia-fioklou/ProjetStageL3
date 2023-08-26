@@ -36,7 +36,7 @@ class FormFillRate(APIView):
         
         for i in range(1, len(forms)):
             form = forms[i]
-            columnsToDrop = ['TypeForm', 'Type Question', 'BIO']
+            columnsToDrop = ['TypeForm', 'Type Question', 'BIO','AMDEC']
             for col in form.columns:    
                 for colToDrop in columnsToDrop:   
                     if colToDrop in col:  
@@ -49,7 +49,7 @@ class FormFillRate(APIView):
                 
                 num_cells_filled = row.notnull().sum()
                 
-                if num_cells_filled > 2:
+                if num_cells_filled > 3:
                     form.loc[index,'remplis']=1
                 else:
                     form.loc[index,'remplis']=0
@@ -156,7 +156,17 @@ class RapportForm(APIView):
                 
                 
         return Response(tabResponseData)
+
+class ProductorVisite(APIView):
+    def get(self, request):
+        zone = request.GET.get('zone', None)
+        union = request.GET.get('union', None)
         
+        last_file=File.objects.last()
+        last_file=last_file.filePath
+        df=pd.read_excel(last_file)
+        
+         
         
         
         
