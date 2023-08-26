@@ -48,7 +48,7 @@ const FormRapportCard = ({ title, labels, labelsData,paramId}) => {
           <p style={{ marginRight: '20px' }}>Télécharger liste des producteurs</p>
         <div style={{ display: 'flex' }}>
           <select id="responseLibelle" className="form-control" style={{ marginRight: '20px' }} onChange={handleResponseChange}>
-            <option value="all">select</option>
+            <option value="all">sélèctionner</option>
             {labels.map((option, index) => (
             <option key={index} value={option}>
                 {option}

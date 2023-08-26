@@ -140,7 +140,7 @@ const GenderChart = ({ selectedZone, selectedCooperative }) => {
         <div style={{ display: 'flex' }}>
             
             <select id="genderFilter" className="form-control" style={{ marginRight: '20px' }}>
-              <option value="all">select</option>
+              <option value="all">sélèctionner</option>
               <option value="homme">Homme</option>
               <option value="femme">Femme</option>
             </select>

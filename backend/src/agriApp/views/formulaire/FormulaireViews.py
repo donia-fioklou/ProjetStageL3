@@ -111,8 +111,10 @@ class RapportForm(APIView):
             df = df.drop_duplicates(subset=['Code Surface'], keep='last')
         df.fillna(pd.NA)
         forms=HandleFormulaire.extractForm(df)
-        form=forms[formId]   
+        form=forms[formId] 
+        print(form.columns)  
         questions=HandleFormulaire.extractQuestion(form)
+        print(questions)
         tabResponseData=[]
         responseData={}
         for question in questions:
@@ -137,7 +139,7 @@ class RapportForm(APIView):
             elif question.at[1,questionType[0]] == 6 :
                 questionLibelle=question.columns[1]
                 
-                question[questionLibelle] = df[questionLibelle].str.replace(',', '.').str.strip()
+                question[questionLibelle] = df[questionLibelle].astype(str).str.replace(',', '.').str.strip()
                 question[questionLibelle] = pd.to_numeric(df[questionLibelle], errors='coerce')
                 
                 #calculer la sum ,la moyenne, le max et le min
@@ -154,7 +156,7 @@ class RapportForm(APIView):
         
                 
                 
-                
+        print(tabResponseData)      
         return Response(tabResponseData)
 
 class ProductorVisite(APIView):

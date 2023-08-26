@@ -81,6 +81,17 @@ const AnalyseBio=()=>{
                             <div className="container py-8">
                                 <div className="card card-custom">
                                     <div className="card-header flex-wrap border-0 pt-6 pb-0 d-flex justify-content-between align-items-center">
+                                        <div className="card-title" >
+                                            <p>
+                                                <h3 className="card-label">Tableau montrant la possibilté d'être Bio ou le risque d'être non-bio </h3>
+                                                <ul >
+                                                    <li>avec un pourcentage faible possibilité d'être BIO</li>
+                                                    <li>avec un pourcentage élevé risque d'être NON-BIO</li>
+                                                </ul>
+                                            </p>    
+                                                    
+                                             
+                                        </div>
                                         <div class="input-group mb-3">
                                             <input type="text" id="searchInput" value={search} onChange={(e) => setSearch(e.target.value)} class="form-control" placeholder="Rechercher..." aria-label="Recipient's username" aria-describedby="basic-addon2"/>
                                             <div class="input-group-append">
@@ -106,7 +117,7 @@ const AnalyseBio=()=>{
                                                     <th>contact</th>
                                                     <th>village</th>
                                                     <th>Zone</th>
-                                                    <th>Score Biologique</th>
+                                                    <th>Score Bio</th>
                                                     <th>Niveau de Risque</th>
                                                     
                                                 </tr>

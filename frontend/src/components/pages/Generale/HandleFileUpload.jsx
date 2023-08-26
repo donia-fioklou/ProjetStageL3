@@ -22,14 +22,16 @@ import ClipLoader from 'react-spinners/ClipLoader';
                     body: formData
                 });
                 const data = await response.json();
-                if (response.status === 200){
+                console.log(data);
+                if (response.status === 201){
                     
                     alert("fichier chargé avec succès");
+                    console.log(data);
                 }
                 setLoading(false); // Disable loader
                 
                 
-                window.location.reload();
+                //window.location.reload();
                 //
                 
             } catch (error) {

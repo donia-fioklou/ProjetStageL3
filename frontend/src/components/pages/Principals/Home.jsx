@@ -83,7 +83,7 @@ const Home = () => {
                                         <NumberCard title='Superficie' number={superficie+ 'ha'} color={"success"} />
                                     </div>
                                     <div className='col-lg-3'>
-                                        <NumberCard title='Nombre de parcelle' number={number_of_parcelle} color={"danger"}/>
+                                        <NumberCard title='Nombre de parcelles' number={number_of_parcelle} color={"danger"}/>
                                     </div>
                                     <div className='col-lg-3'>
                                         <Filters zone={selectedZone} cooperative={selectedCooperative} upadateZone={updateZone} updateCooperative={updateCooperative} />

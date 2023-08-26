@@ -25,6 +25,7 @@ const RapportFormulaire=()=>{
         .then((response) => response.json())
         .then((data) => {
             setQuestionData(data[0]);
+            console.log(questionData)
             
         })
         .finally(() => {

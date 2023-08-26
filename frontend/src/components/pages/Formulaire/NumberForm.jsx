@@ -17,7 +17,7 @@ const NumberForm=()=>{
         <div>
             <NumberCard
                 number={number}
-                title="Nombre de formulaire"
+                title="Nombre de formulaires"
                 color="danger"
                 
             />

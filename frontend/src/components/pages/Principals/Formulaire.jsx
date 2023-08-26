@@ -97,10 +97,10 @@ const Formulaire=()=>{
                                         <NumberForm/>
                                     </div>
                                     <div className='col-lg-3'>
-                                        <NumberCard title='Producteur visité' number={numberOfProducers} color={"primary"} />
+                                        <NumberCard title='Producteurs visités' number={numberOfProducers} color={"primary"} />
                                     </div>
                                     <div className='col-lg-3'>
-                                        <NumberCard title='Formulaire bien remplis' number={superficie} color={"success"} />
+                                        <NumberCard title='Formulaires bien remplis' number={0} color={"success"} />
                                     </div>
                                     
                                     <div className='col-lg-3'>

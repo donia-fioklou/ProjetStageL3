@@ -11,7 +11,7 @@ const PageHeader = () => {
                         <div id="kt_header_menu" className="header-menu header-menu-mobile header-menu-layout-default">
                             <ul className="menu-nav">
                                 <li className="menu-item menu-item">
-                                    <a onClick={() => { navigate('/') }} className="menu-link active">
+                                    <a onClick={() => { navigate('/home') }} className="menu-link active">
                                         <span className="menu-text">Générale</span>
                                     </a>
                                 </li>
@@ -25,7 +25,7 @@ const PageHeader = () => {
                                         <span className="menu-text">Analyse biologique</span>
                                     </a>
                                 </li><li className="menu-item menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
-                                    <a onClick={() => { navigate('/uploadFile') }} className="menu-link">
+                                    <a onClick={() => { navigate('/') }} className="menu-link">
                                         <span className="menu-text">Fichier</span>
                                     </a>
                                 </li>

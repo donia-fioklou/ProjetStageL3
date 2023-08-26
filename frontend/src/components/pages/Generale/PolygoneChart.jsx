@@ -110,7 +110,7 @@ const PolygoneChart = ({ selectedZone, selectedCooperative }) => {
         <div style={{ display: 'flex' }}>
             
             <select id="polygoneFilter" className="form-control" style={{ marginRight: '20px' }}>
-              <option value="all">selectionner</option>
+              <option value="all">sélèctionner</option>
               <option value="remplis">remplis</option>
               <option value="nonRemplis">non remplis</option>
             </select>  

@@ -25,8 +25,8 @@ function App() {
     const { currentUser } = useContext(AuthContext)
 
     const RequireAuth = ({ children }) => {
-        //return currentUser ? (children) : <Navigate to={"/login"} />;
-        return  children;
+        return currentUser ? (children) : <Navigate to={"/login"} />;
+        //return  children;
     }
 
     return (
@@ -36,8 +36,8 @@ function App() {
                     <Routes>
                         <Route exact path='/login' element={<Login />}></Route>
                         <Route exact path='/pre' element={<Presentation />}></Route>
-                        <Route exact path='/' element={<RequireAuth><Home/></RequireAuth>}></Route>
-                        <Route exact path='/uploadFile' element={<RequireAuth><UploadFile/></RequireAuth>}></Route>
+                        <Route exact path='/home' element={<RequireAuth><Home/></RequireAuth>}></Route>
+                        <Route exact path='/' element={<RequireAuth><UploadFile/></RequireAuth>}></Route>
                         <Route exact path='/formulaire' element={<RequireAuth><Formulaire/></RequireAuth>}></Route>
                         <Route exact path='/rapportFormulaire/:id' element={<RequireAuth><RapportFormulaire/></RequireAuth>}></Route>
                         <Route exact path='/analyseBio' element={<RequireAuth><AnalyseBio/></RequireAuth>}></Route>

@@ -118,7 +118,7 @@ const ZoneChart = ({selectedCooperative}) => {
           <p style={{ marginRight: '20px' }}>Télécharger liste des producteurs</p>
         <div style={{ display: 'flex' }}>
           <select id="zoneFilter" className="form-control" style={{ marginRight: '20px' }} onChange={handleZoneChange}>
-            <option value="all">select</option>
+            <option value="all">sélèctionner</option>
             {listZone.map((option, index) => (
             <option key={index} value={option}>
                 {option}

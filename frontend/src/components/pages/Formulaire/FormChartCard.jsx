@@ -34,7 +34,7 @@ const FormChartCard = ({ title,formId, labels, labelsData,productorformRemplis,p
                 <p style={{ marginRight: '20px' }}>Télécharger liste des producteurs</p>
                 <div style={{ display: 'flex' }}>
                                     <select id="formFilter" className="form-control" style={{ marginRight: '20px' }}>
-                                    <option value="all">select</option>
+                                    <option value="all">sélèctionner</option>
                                     <option value="remplis">remplis</option>
                                     <option value="nonRemplis">non remplis</option>
                                     </select>
