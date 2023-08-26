@@ -14,6 +14,7 @@ const Login = () => {
     const navigate = useNavigate()
 
     const { dispatch } = useContext(AuthContext)
+
     // const formData = new FormData();
     // formData.append('username', email);
     // formData.append('password', password);
@@ -25,21 +26,38 @@ const Login = () => {
     }
     const handleLogin = (e) => {
         e.preventDefault();
-        fetch('https://test.coo.tg/traite/connexion/info',{
+        const formData ={
+            username:email,
+            password:password,
+            device:1
+        }
+        
+        fetch('https://test.coo.tg/api/traite/connexion/info',{
             method: 'POST',
-            body: formData,
-            headers:{'content-Type':'application/json',
-            'Access-Control-Allow-Origin': '*'},
+            headers:{'content-Type':'application/json'},
+            body: JSON.stringify(formData)
+            
         }
         )
         .then((response) => response.json())
         .then((data)=>{
             setToken(data.token);
             setRefreshToken(data.refresh_token);
-            console.log("token"+data.token);
-            fetch('https://test.ooo.tg/traite/me/info',{
-                header:{
-                    'Content-Type':'application/json',
+            var token = data.token;
+            
+            console.log(token);
+            if(token != null){
+                localStorage.setItem('uid', email)
+                
+                dispatch({ type: "LOGIN", payload: email })
+                navigate("/");
+
+            }
+
+            /*fetch('https://test.coo.tg/api/traite/me/info',{
+
+                method: 'POST',
+                headers:{
                     'Authorization':'Bearer '+token,
                 }
             }).then(
@@ -55,7 +73,7 @@ const Login = () => {
                 }
                 
             }
-            )
+            )*/
 
         })
         .catch((error) => {
