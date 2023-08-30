@@ -106,7 +106,7 @@ const Login = () => {
                         <div className='login-form text-center p-7 position-relative overflow-hidden'>
                             <div className='d-flex flex-center mb-15'>
                                 <a href='#'>
-                                    <img src='assets/media/logos/logo-letter-13.png' className='max-h-75px' alt='' />
+                                    <img src='assets/media/logos/logoGsmiles.jpeg' className='max-h-75px' alt='' />
                                 </a>
                             </div>
                             <div className='login-signin'>

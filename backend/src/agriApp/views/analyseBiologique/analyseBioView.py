@@ -32,32 +32,34 @@ class AnalyseBio(APIView):
         # sumBio=0
         dfWithScoreBio=df.loc[:,['NomPrenom','Sexe','Contact','Village','Union','Zone','CodeSurface']]
         counter=0
-        for form in forms:
-            questions=HandleFormulaire.extractQuestion(form)
-            
-            for question in questions:
-                counter+=1
-                score_column_name = f'scoreBio_{counter}'    
-                questionType=[col for col in question.columns if 'Type Question' in col]
-                if question.at[1,questionType[0]] in [2,3]: 
-                    question[score_column_name]=0
-                    amdec=[col for col in question.columns if 'AMDEC' in col]
-                    amdec=amdec[0]
-                    bio=[col for col in question.columns if 'BIO' in col]
-                    bio=bio[0]
-                    for index,row in question.iterrows():
-                        scoreAmdec=ProduitAmdec(question.at[index,amdec])                    
-                        question.at[index,amdec]
-                        scoreBio=[col for col in question.columns if 'scoreBio' in col]
-                        question.loc[index,scoreBio]=question.at[index,bio]*scoreAmdec
-            
-                            
-                    #ajouter question au dataframe dfWithScoreBio
-                    dfWithScoreBio=pd.concat([dfWithScoreBio,question],axis=1)
+        # for form in forms:
+        #     questions=HandleFormulaire.extractQuestion(form)
+        questions=HandleFormulaire.extractQuestion(forms[2])   
+        for question in questions:
+            counter+=1
+            score_column_name = f'scoreBio_{counter}'    
+            questionType=[col for col in question.columns if 'Type Question' in col]
+            if question.at[1,questionType[0]] in [2,3]: 
+                question[score_column_name]=0
+                amdec=[col for col in question.columns if 'AMDEC' in col]
+                amdec=amdec[0]
+                bio=[col for col in question.columns if 'BIO' in col]
+                bio=bio[0]
+                print(question)
+                for index,row in question.iterrows():
+                    scoreAmdec=ProduitAmdec(question.at[index,amdec])
+                    print("scoreAmdec")                    
+                    #question.at[index,amdec]
+                    scoreBio=[col for col in question.columns if 'scoreBio' in col]
+                    question.loc[index,scoreBio]=question.at[index,bio]*scoreAmdec
+                    print(question.loc[index,scoreBio])
+                        
+                #ajouter question au dataframe dfWithScoreBio
+                dfWithScoreBio=pd.concat([dfWithScoreBio,question],axis=1)
 
         dfWithScoreBio['totalScoreBio']=0
         
-        print(dfWithScoreBio)
+        #print(dfWithScoreBio)
         for index,row in dfWithScoreBio.iterrows():
             sumBio=0
             for col in dfWithScoreBio.columns:
@@ -74,9 +76,9 @@ class AnalyseBio(APIView):
             
             # totalscoreBio=round(((totalScoreBio*100)/64),2)
             #dfWithScoreBio.at[index,'totalScoreBio']=totalscoreBio
-            print(dfWithScoreBio.at[index,'totalScoreBio'])
-            print(sumBio)
-        dfWithScoreBio = dfWithScoreBio.replace(np.nan, 0)
+            #print(dfWithScoreBio.at[index,'totalScoreBio'])
+            #print(sumBio)
+        dfWithScoreBio = dfWithScoreBio.replace(np.nan, '')
         productorWithScoreBio=dfWithScoreBio.to_dict(orient="records")      
         return Response(productorWithScoreBio)
            

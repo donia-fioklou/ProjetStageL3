@@ -34,9 +34,44 @@ class ExcelFileUploadView(ModelViewSet):
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class RenderData(ModelViewSet):
-    #10 derniers producteurs
-    queryset = Producteur.objects.all().order_by('-id')[:10]
-    serializer_class = ProductorSerializers
+class CheckFile(APIView):
+    def get(self, request):
+        try:
+            last_file=File.objects.last()
+            last_file=last_file.filePath
+            df=pd.read_excel(last_file)
+            columnName=df.columns
+            
+            required_columns = [ 'code','Nom et Prénoms','Sexe','Contact','Village','Union','Zone','Code Surface','Surface Parcelle']
+
+            missing_columns = [col for col in required_columns if col not in columnName]
+
+            if missing_columns:
+                response_data = {
+                    "message": "Certaines colonnes sont manquantes.",
+                    "missing_columns": missing_columns
+                }
+                return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                newColonneName={
+                    'Nom et Prénoms':'NomPrenom',
+                    'Code Surface':'CodeSurface',
+                }
+                df.drop_duplicates(subset=['code'],keep='first',inplace=True)
+                df.rename(columns=newColonneName, inplace=True)
+                df_info=df.loc[:,[ 'code','NomPrenom','Sexe','Contact','Village']]
+                df_info.fillna(value='',inplace=True)
+                df_info=df_info.to_dict(orient='records')
+                
+                response_data =df_info
+                return Response(response_data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            response_data = {
+                "message": "Une erreur s'est produite lors du traitement du fichier.",
+                "error_details": str(e)
+            }
+            return Response(response_data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
         
         

@@ -1,4 +1,5 @@
 def ProduitAmdec(chaine):
+    chaine=str(chaine)
     nombres = chaine.split('|')  # Divise la chaîne en liste de nombres en utilisant le séparateur '|'
     produit = 1 
     

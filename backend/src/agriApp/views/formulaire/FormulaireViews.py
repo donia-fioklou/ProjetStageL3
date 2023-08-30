@@ -36,7 +36,7 @@ class FormFillRate(APIView):
         
         for i in range(1, len(forms)):
             form = forms[i]
-            columnsToDrop = ['TypeForm', 'Type Question', 'BIO','AMDEC']
+            columnsToDrop = ['TEST','Type Question','Stat','BIO','AMDEC']
             for col in form.columns:    
                 for colToDrop in columnsToDrop:   
                     if colToDrop in col:  
@@ -69,7 +69,7 @@ class FormFillRate(APIView):
                 dfForm=dfForm.loc[dfForm['Zone']==zone]
             if union:
                 dfForm=dfForm.loc[dfForm['Union']==union]
-            colForm=[col for col in dfForm.columns if 'NomForm' in col]
+            colForm=[col for col in dfForm.columns if 'Formulaire' in col]
             nomForm=dfForm[colForm[0]].iloc[0]
             numberformRemplis=dfForm.loc[dfForm['remplis']==1].shape[0]
            
@@ -104,20 +104,19 @@ class RapportForm(APIView):
         df=HandleFormulaire(df).nettoyage()
         forms=HandleFormulaire.extractForm(df)
         form=forms[formId]
-        formType=[col for col in form.columns if 'TypeForm' in col]
+        formType=[col for col in form.columns if 'TEST' in col]
         if form.at[1,formType[0]]== 0:
             df = df.drop_duplicates(subset=['code'], keep='last')
         elif form.at[1,formType[0]]== 1:
             df = df.drop_duplicates(subset=['Code Surface'], keep='last')
         df.fillna(pd.NA)
         forms=HandleFormulaire.extractForm(df)
-        form=forms[formId] 
-        print(form.columns)  
+        form=forms[formId]   
         questions=HandleFormulaire.extractQuestion(form)
-        print(questions)
         tabResponseData=[]
         responseData={}
         for question in questions:
+            
             questionType=[col for col in question.columns if 'Type Question' in col]
             if question.at[1,questionType[0]] in [2,3]: 
                 questionLibelle=question.columns[1]
@@ -138,35 +137,24 @@ class RapportForm(APIView):
                 
             elif question.at[1,questionType[0]] == 6 :
                 questionLibelle=question.columns[1]
-                
-                question[questionLibelle] = df[questionLibelle].astype(str).str.replace(',', '.').str.strip()
-                question[questionLibelle] = pd.to_numeric(df[questionLibelle], errors='coerce')
-                
+                question[questionLibelle]=pd.to_numeric(question[questionLibelle],errors="coerce").fillna(0)
                 #calculer la sum ,la moyenne, le max et le min
-                sumQuestion = round(question[questionLibelle].sum(),0)
+                sumQuestion = round(question[questionLibelle].sum(),2)
                 moyQuestion = round(question[questionLibelle].mean(),2)
                 maxQuestion = question[questionLibelle].max()
                 minQuestion = question[questionLibelle].min()
+                
+                    
                 responseData[questionLibelle] = {
                     'sum':sumQuestion,
                     'moy':moyQuestion,
                     'max':maxQuestion,
                     'min':minQuestion
                 }
-        
                 
-                
-        print(tabResponseData)      
         return Response(tabResponseData)
 
-class ProductorVisite(APIView):
-    def get(self, request):
-        zone = request.GET.get('zone', None)
-        union = request.GET.get('union', None)
-        
-        last_file=File.objects.last()
-        last_file=last_file.filePath
-        df=pd.read_excel(last_file)
+
         
          
         

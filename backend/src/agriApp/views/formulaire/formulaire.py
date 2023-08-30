@@ -10,8 +10,8 @@ class HandleFormulaire():
         colonneTexte = self.df.select_dtypes(include=['object']).columns
         self.df[colonneTexte] = self.df[colonneTexte].apply(lambda x: x.str.strip() if x.dtype == "object" else x)
         # Convertir les valeurs non numériques en NaN dans les colonnes numériques
-        colonneNumerique = self.df.select_dtypes(include=['int64', 'float64']).columns
-        self.df[colonneNumerique] = self.df[colonneNumerique].apply(pd.to_numeric, errors='coerce')
+        # colonneNumerique = self.df.select_dtypes(include=['int64', 'float64']).columns
+        #self.df[colonneNumerique] = self.df[colonneNumerique].apply(pd.to_numeric, errors='coerce')
         return self.df  
     
     
@@ -46,7 +46,14 @@ class HandleFormulaire():
         
         for col in form.columns[2:]:
             col_name.append(col)
-            if 'AMDEC'in col:
+            if 'AMDEC' in col or 'Stat' in col:
+            #if 'AMDEC' in col :
                 questions.append(form.loc[:,col_name])
                 col_name=[]
         return questions
+    @staticmethod
+    def convert_to_number(x):
+        try:
+            return float(x)
+        except ValueError:
+            return 0

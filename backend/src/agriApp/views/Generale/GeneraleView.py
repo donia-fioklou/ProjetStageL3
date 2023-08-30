@@ -23,6 +23,12 @@ class NumberOfProducer(APIView):
         #nombre parcelle
         number_of_parcelle = df.shape[0]
         #superficie totale
+        # df['Surface Parcelle'] = df['Surface Parcelle'].str.replace(',', '.')
+        # df['Surface Parcelle'].astype(float)
+        df['Surface Parcelle'] = pd.to_numeric(df['Surface Parcelle'], errors='coerce')
+        #df['Surface Parcelle'].astype(float)
+        df['Surface Parcelle'] = df['Surface Parcelle'].fillna(0)
+        print(df['Surface Parcelle'])
         superficie_totale=df['Surface Parcelle'].sum()
         
         # Calculer le nombre de producteurs
@@ -48,7 +54,6 @@ class GenderStats(APIView):
         last_file=File.objects.last()
         last_file=last_file.filePath
         df=pd.read_excel(last_file)
-        print(df.columns)
         df=Generale(df).nettoyage()
         df=df.drop_duplicates(subset=['code'], keep='last')
         

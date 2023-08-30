@@ -4,28 +4,62 @@ import { Helmet } from 'react-helmet';
 import Aside from '../../fragments/Aside';
 import Header from '../../fragments/Header';
 import PageHeader from '../../fragments/PageHeader';
-import HandleFileUpload from '../Generale/HandleFileUpload';
 import ClipLoader from 'react-spinners/ClipLoader';
 const UploadFile=()=>{
     const [productorData, setProductorData]=useState([]);
     const [loading, setLoading] = useState(false)
-    useEffect(()=>{
-        setLoading(true)
-        fetch('http://127.0.0.1:8000/api/render-data/')
-        .then((response) => response.json())
-        .then((data) => {
+    const handleFileUpload = async (event) => {
+        const file = event.target.files[0];
+        const allowedExtensions = /(\.xlsx|\.xls)$/i; // Regular expression to match Excel file extensions
+        if (!allowedExtensions.exec(file.name)) {
+            alert('Type de fichier invalide. Veuillez sélectionner un fichier Excel.');
+            return;
+        }
+        const url = 'http://127.0.0.1:8000/api/upload-excel/';
+        const formData = new FormData();
+        formData.append('filePath', file);
+
+        try {
+            setLoading(true); // Enable loader
+            const response = await fetch(url, {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            console.log(data);
+            if (response.status === 201){
+                
+                alert("fichier chargé avec succès");
+                FetchFileData();
+                console.log(data);
+            }
+            setLoading(false); // Disable loader
+            
+            
+            //window.location.reload();
+            //
+            
+        } catch (error) {
+            setLoading(false); // Disable loader
+            console.error(error);
+        }
+    };
+    const FetchFileData= async ()=>{
+        const url='http://127.0.0.1:8000/api/check-df-info/';
+        try{
+            const response = await fetch(url, {
+            method: 'GET',
+            });
+            const data = await response.json();
             setProductorData(data);
-        })
-        .finally(() => {
-            setLoading(false)
-          })
-        .catch((error) => {
-            console.error('Error fetching number of producers:', error);
-          });
-
-    },[]
-
-    );
+        }
+        catch(error){
+            setLoading(false); // Disable loader
+            console.error(error);
+        }
+        
+    }
+    
     return(
         <div>
             <div>
@@ -47,7 +81,15 @@ const UploadFile=()=>{
                                         <h3 className="card-label">Informations du fichier</h3>
                                     </div>
                                     <div className="d-flex align-items-center">
-                                        <HandleFileUpload /> 
+                                        {/* <HandleFileUpload />  */}
+                                        <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
+                                            <div className="custom-file">
+                                                <input type="file" className="custom-file-input " id="customFile" onChange={handleFileUpload} />
+                                                <label className="custom-file-label" htmlFor="customFile">
+                                                    Nouveau fichier
+                                                </label>
+                                            </div>
+                                        </div> 
                                     </div>
                                 </div>
                                     
@@ -73,13 +115,13 @@ const UploadFile=()=>{
                                             </thead>
                                             <tbody>
                                             {productorData.map((productor,index) => (
-                                            <tr key={productor.code}>
+                                            <tr key={index+1}>
                                                 <td>{index +1}</td>
                                                 <td>{productor.code}</td>
-                                                <td>{productor.nomPrenom}</td>
-                                                <td>{productor.sexe}</td>
-                                                <td>{productor.contact}</td>
-                                                <td>{productor.village}</td>
+                                                <td>{productor.NomPrenom}</td>
+                                                <td>{productor.Sexe}</td>
+                                                <td>{productor.Contact}</td>
+                                                <td>{productor.Village}</td>
                                                 
                                             </tr>
                                             ))}

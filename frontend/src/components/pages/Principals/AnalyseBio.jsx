@@ -50,7 +50,10 @@ const AnalyseBio=()=>{
     );
 
     function getStatusColorClass(score) {
-        if ( score < 32) {
+        if (score === 0) {
+            return <span class="label label-lg font-weight-bold label-light-primary label-inline"style={{ width: '80px' }}> sans réponse </span>;
+        }
+        else if ( score < 32) {
             return <span class="label label-lg font-weight-bold label-success label-inline "style={{ width: '80px' }}> Faible </span>;
         } else if (score >= 32 && score < 48) {
             return <span class="label label-lg font-weight-bold label-warning label-inline"style={{ width: '80px' }}> Moyen </span>;
@@ -83,7 +86,7 @@ const AnalyseBio=()=>{
                                     <div className="card-header flex-wrap border-0 pt-6 pb-0 d-flex justify-content-between align-items-center">
                                         <div className="card-title" >
                                             <p>
-                                                <h3 className="card-label">Tableau montrant la possibilté d'être Bio ou le risque d'être non-bio </h3>
+                                                <h3 className="card-label">Tableau montrant l'analyse biologique des données collectées </h3>
                                                 <ul >
                                                     <li>avec un pourcentage faible possibilité d'être BIO</li>
                                                     <li>avec un pourcentage élevé risque d'être NON-BIO</li>
