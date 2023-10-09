@@ -25,9 +25,9 @@ class NumberOfProducer(APIView):
         #superficie totale
         # df['Surface Parcelle'] = df['Surface Parcelle'].str.replace(',', '.')
         # df['Surface Parcelle'].astype(float)
-        df['Surface Parcelle'] = pd.to_numeric(df['Surface Parcelle'], errors='coerce')
+        df['Surface Parcelle'] = pd.to_numeric(df['Surface Parcelle'], errors='coerce').fillna(0)
         #df['Surface Parcelle'].astype(float)
-        df['Surface Parcelle'] = df['Surface Parcelle'].fillna(0)
+        #df['Surface Parcelle'] = df['Surface Parcelle'].fillna(0)
         print(df['Surface Parcelle'])
         superficie_totale=df['Surface Parcelle'].sum()
         

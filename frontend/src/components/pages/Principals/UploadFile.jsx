@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import Aside from '../../fragments/Aside';
 import Header from '../../fragments/Header';
@@ -34,16 +34,12 @@ const UploadFile=()=>{
                 console.log(data);
             }
             setLoading(false); // Disable loader
-            
-            
-            //window.location.reload();
-            //
-            
         } catch (error) {
             setLoading(false); // Disable loader
             console.error(error);
         }
     };
+
     const FetchFileData= async ()=>{
         const url='http://127.0.0.1:8000/api/check-df-info/';
         try{
