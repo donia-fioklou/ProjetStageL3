@@ -95,7 +95,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'agridatahub',
         'USER': 'postgres',
-        'PASSWORD': 'Martin47.',
+        'PASSWORD': '12345678',
         'HOST' : 'localhost',
         'PORT' : '5432'
         

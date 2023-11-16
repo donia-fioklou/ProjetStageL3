@@ -1,0 +1,45 @@
+version: '3'
+
+networks:
+  monreseau:
+    external: false
+
+services:
+
+  # Service for the web application
+  web:
+    # Build the image using the Dockerfile in the current directory
+    build: .
+    # Set the container name to 'backend'
+    container_name: backend
+    # Mount the current directory as a volume inside the container at /app
+    volumes:
+      - .:/app
+    # Expose port 8000 on the host and map it to port 8000 on the container
+    ports:
+      - '8000:8000'
+    # Use the 'monreseau' network for communication between containers
+    networks:
+      - monreseau
+    # Specify the entrypoint script to be executed when the container starts
+    entrypoint: /app/entrypoint.sh
+
+  # Service for the PostgreSQL database
+  db:
+    # Use the latest PostgreSQL image from Docker Hub
+    image: "postgres:latest"
+    # Set the container name to 'backend_db'
+    container_name: backend_db
+    # Set the environment variable for the PostgreSQL password
+    environment:
+      POSTGRES_PASSWORD: 12345678
+    # Use the 'monreseau' network for communication between containers
+    networks:
+      - monreseau
+    # Mount a volume to persist the PostgreSQL data
+    volumes:
+      - pgdb:/var/lib/postgresql/data
+
+# Define a named volume for PostgreSQL data
+volumes:
+  pgdb:
